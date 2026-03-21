@@ -1,0 +1,37 @@
+.img-box {
+    height: 170px;
+    width: 170px;
+    
+}
+
+.img-box img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+p a {
+    color: #D35B1F;
+}
+
+.company-name {
+    color: #D35B1F;
+    font-size: 2rem;
+}
+
+.text-box {
+    min-width: 0;
+}
+
+
+@media (max-width: 576px) {
+    .img-box {
+        height: 80px;
+        width: 80px;
+        flex-shrink: 0;
+    }
+    @media (max-width: 576px) {
+    .company-name {
+        font-size: 1.5rem;
+    }
+}
+}

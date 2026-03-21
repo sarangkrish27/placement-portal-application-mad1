@@ -1,0 +1,80 @@
+.img-box {
+    position: relative;
+    width: 250px;
+}
+.img-box img {
+    height: 250px;
+    border-radius: 50%;
+}
+
+.main-box {
+    min-height: 80vh;
+}
+
+.edit-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #FFAE71;
+    border: 2px solid #D35B1F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.resume-btn {
+    border: 1px solid black;
+    padding: 8px 20px;
+}
+
+.resume-btn:hover {
+    background-color: black;
+    color: white;
+}
+
+.form-box label {
+    padding-bottom: 5px;
+    margin-top: 10px;
+}
+.form-box input {
+    height: 48px;
+    border: 1px solid #222;
+}
+.form-box input[type="submit"] {
+    height: 50px;
+    background-color: black;
+    color: white;
+    font-weight: 500;
+}
+
+.form-select,
+.form-control {
+    height: 48px;
+    border: 1px solid #000;
+    box-shadow: none;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #000;
+    box-shadow: none;
+}
+
+@media (max-width: 576px) {
+    .img-box {
+        width: 180px;
+    }
+
+    .img-box img {
+        height: 180px;
+    }
+
+    .main-box {
+        height: auto;
+    }
+}

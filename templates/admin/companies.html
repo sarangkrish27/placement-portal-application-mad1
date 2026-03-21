@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | Companies{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% include 'admin_header.html' %}
+
+    <div style="min-height: 100vh;" class="section mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% if pending_request %}
+        <div class="approval-pending-box">
+            <h2>Approval pending</h2>
+            {% for company in pending_request %}
+            <div class="layout-row row mt-3 mx-2">
+                <div class="col-12 col-md-8 d-flex align-items-center">
+                    <div class="img-box">
+                        <img class="rounded-circle"
+                            src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                            alt="">
+                    </div>
+                    <div class="text ms-4">
+                        <h5>{{ company.company_name }}</h5>
+                        <p>{{ company.industry }}</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
+                        <button style="background-color: black; color: white;" class="shadow rounded-pill primary-btn">
+                            Know More
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+            <div class="company-list mt-5">
+            <h2>All Companies</h2>
+            {% for company in all_company %}
+            <div class="layout-row row mt-3 mx-1">
+                <div class="col d-flex align-items-center">
+                    <div class="img-box">
+                        <img class="rounded-circle"
+                            src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                            alt="">
+                    </div>
+                    <div class="text ms-4">
+                        <h5>{{ company.company_name }}</h5>
+                        <p>{{ company.industry }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
+                        <button style="background-color: black; color: white;" class="shadow rounded-pill primary-btn">
+                            View Details
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

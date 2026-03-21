@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Login{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class=" container-sm login-box">
+    <div class="p-2 d-none d-md-block img-box position-relative">
+        <img src="{{ url_for('static', filename='images/institute-img1.jpeg') }}" alt="">
+        <span class="logo-txt position-absolute top-0 start-0 m-3
+               text-white fw-bold fs-2">
+            NIST
+        </span>
+    </div>
+    <div class="p-2 form-box d-flex flex-column justify-content-around align-items-center">
+        <div class="text-center mt-5">
+            <h2>Welcome back</h2>
+            <p>Please enter your details to login.</p>
+        </div>
+        <form class="d-flex flex-column" method="post">
+            {{ form.hidden_tag() }}
+            <div class="email-input">
+                <label for="email">Your email</label>
+                {{ form.email }}
+            </div>
+            <div class="password-input position-relative">
+                <label for="password">Password</label>
+                {{ form.password }}
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ msg }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {{ form.login }}
+        </form>
+        <p>Don't have an account? <a style="color: #D35B1F;" href="{{ url_for('auth.newuser') }}">Sign up</a></p>
+    </div>
+</div>
+
+
+
+{% endblock %}

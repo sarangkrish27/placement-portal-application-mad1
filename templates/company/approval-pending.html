@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Login{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/approval-pending.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class="container-sm signup-box">
+    <div class="p-2 d-none d-md-block img-box position-relative">
+        <img src="{{ url_for('static', filename='images/institute-img5.jpeg') }}" alt="">
+        <span class="logo-txt position-absolute top-0 start-0 m-3
+               text-white fw-bold fs-2">
+            NIST
+        </span>
+    </div>
+    <div class="p-2 form-box d-flex flex-column justify-content-around align-items-center">
+        <div class="text-left mt-5 ms-5">
+            <h2>Account Verification in Progress</h2>
+            <h4>Thank you for registering with the Nexus Institute of Science & Technology (NIST) Placement Portal.</h4>
+            <p>
+                Your account is currently being verified by our Training & Placement Office. To maintain the quality of
+                our placement drives, we manually review all corporate registrations.<br>Your profile will be reviewed
+                within <strong>48 hours</strong>
+            </p>
+            <a class="text-decoration-none" href="{{ url_for('auth.index') }}">
+                <div class="home-btn shadow d-flex align-items-center justify-content-center mt-5">
+                    <p class="text-white m-0">Go back</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

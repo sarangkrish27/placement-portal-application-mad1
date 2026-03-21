@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | 403 - Access Forbidden{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    <div style="min-height: 100vh;" class="main-box mt-5 d-flex flex-column align-items-center justify-content-center">
+    <h2>403 - Access Forbidden 🚫</h2>
+    <p>You do not have permission to view this page.</p>
+    <a href="{{ url_for('auth.login') }}">
+        <button style="background-color: black; color: white;" class="primary-btn">
+            Go Back
+        </button>
+    </a>
+    </div>
+</div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if student and role == 'admin' %}
+        NIST ADMIN | {{ student.name }} Edit Profile
+    {% elif student %}
+        NIST | {{ student.name }} Edit Profile
+    {% else %}
+        NIST | Complete Profile
+    {% endif %}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/complete-profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-sm">
+    {% if role == 'admin' %}
+        {% include 'admin_header.html' %}
+    {% elif student %}
+        {% set student_profile = user.student.profile_filename %}
+        {% include 'student_header.html' %}
+    {% endif %}
+
+    {% if student and role == 'admin' %}
+        <h1 class="mt-5">Edit {{ student.name }} profile</h1>
+    {% elif student %}
+        <h1 class="mt-5">Edit your profile</h1>
+    {% else %}
+        <h1 class="mt-5">Complete your profile</h1>
+    {% endif %}
+    
+    <div class="edit-sec">
+        <form class="form-box" enctype="multipart/form-data" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="row main-box">
+                <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-5">
+
+                    <div class="img-box">
+                        <img class="preview-image"
+                             src="{% if student and student.profile_filename %}
+                                    {{ url_for('static', filename='uploads/profiles/' + student.profile_filename) }}
+                                  {% else %}
+                                    {{ url_for('static', filename='images/user.png') }}
+                                  {% endif %}"
+                             alt="profile picture">
+
+                        <label type="button" class="edit-btn shadow" for="profile">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#D35B1F"
+                                class="bi bi-pen" viewBox="0 0 16 16">
+                                <path
+                                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+                            </svg>
+                            {{ form.profile(id="profile", hidden=True) }}
+                        </label>
+
+                        {% for error in form.profile.errors %}
+                            <div class="text-danger mt-2">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="name-input">
+                        {{ form.name.label(for="signup-name") }}
+                        {{ form.name(class="rounded-pill w-100 ps-3", id="signup-name", placeholder="Your name") }}
+                        {% for error in form.name.errors %}
+                            <div class="text-danger mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="resume-box">
+                        <label role="button" class="btn btn-secondary resume-btn rounded-pill" for="resume">
+                            <span id="resume-text">
+                                {% if student and student.resume_filename %}
+                                    Change Resume
+                                {% else %}
+                                    Add resume
+                                {% endif %}
+                            </span>
+                            {{ form.resume(id="resume", hidden=True) }}
+                        </label>
+
+                        {% for error in form.resume.errors %}
+                            <div class="text-danger mt-2">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="info-box col-12 col-md-6 d-flex flex-column justify-content-center">
+
+                    {{ form.degree.label }}
+                    {{ form.degree(class="form-select mb-4 rounded-pill") }}
+                    {% for error in form.degree.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+
+                    {{ form.yos.label }}
+                    {{ form.yos(class="rounded-pill ps-3 w-100 mb-4", min="1995", max="2028", step="1") }}
+                    {% for error in form.yos.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+
+                    {{ form.cgpa.label }}
+                    {{ form.cgpa(class="rounded-pill ps-3 w-100 mb-4", min="0", max="10", step="0.01") }}
+                    {% for error in form.cgpa.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, msg in messages %}
+                                <div class="alert alert-{{ category }}" role="alert">
+                                    {{ msg }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    {{ form.submit(class="rounded-pill mt-5 shadow") }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const profileInputBox = document.querySelector("#profile");
+
+    profileInputBox.addEventListener("change", updatePreview);
+
+    function updatePreview() {
+        const previewImage = document.querySelector(".preview-image");
+        if (profileInputBox.files.length > 0) {
+            let imageLink = URL.createObjectURL(profileInputBox.files[0]);
+            previewImage.src = imageLink;
+        }
+    }
+
+    document.getElementById('resume').addEventListener('change', function (e) {
+        const resumeText = document.getElementById('resume-text');
+        const file = e.target.files[0];
+
+        if (file) {
+            const fileName = file.name;
+            const fileSize = (file.size / 1024).toFixed(2);
+            resumeText.innerHTML = `📄 ${fileName} <small>(${fileSize} KB)</small>`;
+        } else {
+            resumeText.textContent = 'Add resume';
+        }
+    });
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

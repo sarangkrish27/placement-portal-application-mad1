@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Create new user{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class="container-sm login-box">
+  <div class="p-2 d-none d-md-block img-box position-relative">
+    <img src="{{ url_for('static', filename='images/institute-img2.jpeg') }}" alt="">
+    <span class="logo-txt position-absolute top-0 start-0 m-3
+               text-white fw-bold fs-2">
+    NIST
+  </span>
+  </div>
+  <div class="p-2 form-box d-flex flex-column justify-content-around align-items-center">
+    <div class="text-center mt-5">
+        <h2>Create an account</h2>
+        <p>Are you a student or company?</p>
+    </div>
+    <div class="option">
+      <a class="text-decoration-none" style="color: black;" href="{{ url_for('student.register') }}">
+        <div class="option-box shadow">
+        <p class="option-text" style="margin: 0;">Student</p>
+      </div>
+      </a>
+      <a class="text-decoration-none" style="color: black;" href="{{ url_for('company.register') }}">
+        <div class="option-box shadow mt-4">
+        <p class="option-text" style="margin: 0;">Company</p>
+      </div>
+      </a>
+    </div>
+    <p>Already have an account? <a style="color: #D35B1F;" href="{{ url_for('auth.login') }}">Login</a></p>
+        
+  </div>
+</div>
+
+{% endblock %}

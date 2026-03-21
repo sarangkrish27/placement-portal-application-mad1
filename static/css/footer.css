@@ -1,0 +1,22 @@
+.site-footer {
+  background-color: black;
+  color: white;
+}
+
+.site-footer .footer-logo {
+  font-family: 'Red Rose', sans-serif;
+  color: #D35B1F;
+  padding-left: 5px;
+  font-size: 60px;
+}
+
+.big-input {
+  padding: 16px 20px;  
+  text-align: left;        
+  vertical-align: top;
+  resize: none;
+}
+
+.big-input::placeholder {
+  text-align: left;
+}

@@ -1,14 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
-from werkzeug.security import generate_password_hash
-from app import app, db
+from app import db, bcrypt
+from flask_login import UserMixin
 
-class User(db.Model):
+
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
     
-    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
-    hashedpassword = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), nullable=False)
     is_profile_completed = db.Column(db.Boolean, nullable=False, default=False)
     is_blacklisted = db.Column(db.Boolean, default=False)
@@ -23,7 +24,7 @@ class Student(db.Model):
     __tablename__ = 'student'
     
     id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False, unique=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
     name = db.Column(db.String(50), nullable=False)
     profile_filename = db.Column(db.String(100))
     department = db.Column(db.String(100), nullable=False)
@@ -37,7 +38,7 @@ class Company(db.Model):
     __tablename__ = 'company'
 
     id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.Integer, db.ForeignKey('user.uid'), nullable=False, unique=True)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, unique=True)
     company_name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(250), nullable=False)
     industry = db.Column(db.String(100), nullable=False)
@@ -142,16 +143,3 @@ def reset_application_status_on_blacklist():
         if application.student.user.is_blacklisted:
             db.session.delete(application)
     db.session.commit()
-
-
-with app.app_context():
-    db.create_all()
-    admin = User.query.filter_by(role='admin').first()
-    update_drive_status()
-    reset_application_status_on_blacklist()
-
-    if not admin:
-        passowrd = generate_password_hash('admin123')
-        admin = User(email='admin@placement.nist.edu', hashedpassword=passowrd, role='admin', is_profile_completed=1)
-        db.session.add(admin)
-        db.session.commit()

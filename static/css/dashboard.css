@@ -1,0 +1,14 @@
+.label-text {
+    font-size: 20px;
+    color: #0000009c;
+}
+.count-text {
+    font-size: 3rem;
+    font-weight: 500;
+    color: #d26432;
+    text-align: right;   /* This aligns the number to the right */
+}
+
+.title-text {
+    font-size: 1.55rem;
+}

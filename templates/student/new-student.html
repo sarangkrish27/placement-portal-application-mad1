@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Student SignUp{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class="container-sm login-box">
+  <div class="p-2 d-none d-md-block img-box position-relative">
+    <img src="{{ url_for('static', filename='images/institute-img3.jpeg') }}" alt="">
+    <span class="logo-txt position-absolute top-0 start-0 m-3
+               text-white fw-bold fs-2">
+    NIST
+  </span>
+  </div>
+  <div class="p-2 form-box d-flex flex-column justify-content-around align-items-center">
+    <div class="text-center mt-5">
+        <h2>Create an account</h2>
+        <p>Please enter your details to signup.</p>
+    </div>
+        <form class="d-flex flex-column" action="" method="post">
+            {{ form.hidden_tag() }}
+            <div class="email-input">
+                <label for="signup-email">Student email</label>
+                {{ form.email }}
+            </div>
+            <div class="password-input position-relative">
+                <label for="signup-password">Password</label>
+                {{ form.password }}
+            </div>
+
+            <div class="confirm-password-input position-relative">
+                <label for="signup-password">Confirm Password</label>
+
+                {{ form.confirm_password }}
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+  {{ msg }}
+</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+            <input class="rounded-pill shadow" type="submit" value="Sign Up">
+        </form>
+        <p>Already have an account? <a style="color: #D35B1F;" href="{{ url_for('auth.login') }}">Login</a></p>
+  </div>
+</div>
+
+
+
+{% endblock %}

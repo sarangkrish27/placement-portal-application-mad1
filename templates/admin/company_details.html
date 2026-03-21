@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | {{ company.company_name }}{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/companies_details.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class="container-sm">
+    {% include 'admin_header.html' %}
+    <div style="min-height: 100vh;" class="main-box mt-5">
+        <div class="row detail-box d-flex justify-content-between">
+            <div class="d-flex col-12 col-md-8">
+                <div class="img-box">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
+                </div>
+                <div class="text-box ps-4">
+                    <h5 style="color: #D35B1F;" class="fw-semibold company-name">{{ company.company_name }}</h5>
+                    <p class="mb-0">{{ company.industry }}</p>
+                    <p class="mb-0">HR Name: {{ company.hr_name }}</p>
+                    <p class="mb-0">HR Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+                    <p class="mb-0">Website: <a href="{{ company.website }}">{{ company.website }}</a></p>
+                    {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
+                    <a style="color: #D35B1F;" href="#">View drives</a>
+                    {% endif %}
+                    {% if company.user.is_blacklisted %}
+                    <p class="mb-0">Status: Blacklisted</p>
+                    <p class="mb-0">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="action-box col-12 col-md-4 mt-3 mt-md-0">
+                {% if company.approval_status == 'pending' %}
+                <div class="btn-box d-flex justify-content-end gap-3">
+                    <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
+                        <button type="submit" class="btn rounded-pill btn-danger">
+                            Reject
+                        </button>
+                    </form>
+                    <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
+                        <button type="submit" class="btn rounded-pill btn-success">
+                            Approve
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-12 d-flex flex-wrap gap-2
+            justify-content-start justify-content-md-end">
+                        <a href="#"><button type="button"
+                                class="btn btn-dark rounded-pill">Edit</button></a>
+                        <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#blacklistModel">
+                            Blacklist
+                        </button>
+                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#deleteModel">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <div class="desc-box mt-3">
+            <p>{{ company.description }}</p>
+        </div>
+    </div>
+</div>
+
+<form action="{{ url_for('admin.userBlacklist', uid=company.uid) }}" method="post">
+    <div class="modal fade" id="blacklistModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm blacklist</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="reason-input">
+                        <p>Enter the reason:</p>
+                        <textarea style="height: 160px; border-radius: 32px;" name="reason"
+                            class="big-input w-100 ps-3 mb-4" placeholder="Enter the reason" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-warning" value="Blacklist">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form action="{{ url_for('admin.userDelete', uid=company.uid) }}" method="post">
+    <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Deletion is permanent and cannot be reversed.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% include 'footer.html' %}
+{% endblock %}

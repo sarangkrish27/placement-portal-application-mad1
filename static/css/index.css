@@ -1,0 +1,74 @@
+.home {
+    margin-top: 90px;
+}
+
+.navbar {
+    width: 100%;
+    max-width: 1140px;
+    background-color: white;
+}
+.logo {
+    font-family: 'Red Rose', sans-serif;
+    color: #D35B1F;
+    padding-left: 5px;
+}
+.login-btn {
+    background-color: #FFAE71;
+    padding: 8px 20px;
+    color: black;
+    text-decoration: none;
+}
+.login-btn:hover {
+    background-color: #ffc08f;
+}
+.home {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.home-text {
+    margin-top: 3.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.home-text h1 {
+    font-size: 4rem;
+    font-weight: 600;
+    line-height: 0.9;
+}
+.student-img {
+    height: 460px;
+}
+
+.recruiters {
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+.recruiters-list li {
+    font-size: 32px;
+}
+
+.box-1, .box-2 {
+    width: 500px;
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.primary-btn {
+    padding: 8px 20px;
+    border-radius: 44px;
+    border: none;
+    white-space: nowrap;
+}
+
+.image {
+    height: 60px;
+    width: 60px;
+    background-color: #cecece;
+    border-radius: 100%;
+}

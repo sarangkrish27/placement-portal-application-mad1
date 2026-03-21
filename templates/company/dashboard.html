@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Dashboard{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div style="min-height: 100vh;" class="main-box mt-5">
+      <h1 style="color: #D35B1F;">{{ greet }} {{ company.hr_name }}</h1>
+    </div>
+</div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,58 @@
+.logo-txt {
+    font-family: 'Red Rose', sans-serif;
+    padding-left: 5%;
+    padding-top: 3%;
+}
+
+.signup-box {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.img-box {
+    width: 45%;
+    display: flex;
+    align-items: center;
+}
+.img-box img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 40px;
+}
+.form-box {
+    width: 50%;
+    justify-content: center;
+
+}
+.form-box h2 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #D35B1F;
+}
+
+.form-box p {
+    color: #0000009e;
+}
+
+.home-btn {
+    width: 100%;
+    height: 50px;
+    background-color: black;
+    border-radius: 44px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+@media (max-width: 767.98px) {
+    .img-box {
+        display: none;
+    }
+
+    .form-box {
+        width: 100%;
+    }
+}

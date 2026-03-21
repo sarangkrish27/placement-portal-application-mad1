@@ -1,11 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Hello from index
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}NIST{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content%}
+
+<nav class="navbar navbar-expand-lg fixed-top border border-secondary-subtle rounded-pill mt-4 shadow mx-auto" style="max-width: 95%;">
+    <div class="container-fluid">
+        <a class="navbar-brand logo fw-bold me-auto" href="/">NIST</a>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title logo" id="offcanvasNavbarLabel">
+                    NIST
+                </h5>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-center gap-3 flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recruiters">Recruiters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <a class="login-btn rounded-pill" href="{{ url_for('auth.login') }}" role="button">Login</a>
+    </div>
+</nav>
+
+<div style="min-height: 100vh;" class="container-lg d-flex align-items-center justify-content-center" id="sec-1">
+    <div class="home">
+      <div class="home-text">
+        <h1 class="text-center">Elevate Your Career,<br>Empower Your Future.</h1>
+      <p class="text-center pt-1" style="max-width: 590px;">The Official Training & Placement Portal of Nexus Institute of Science & Technology Connecting our brightest minds with industry leaders.</p>
+      </div>
+       <img class="student-img" style="z-index: -1;" src="{{ url_for('static', filename='images/student.png') }}" alt="">
+    </div>
+</div>
+<div class="recruiters" id="recruiters">
+    <div class="container-sm pt-5 pb-5">
+        <h2 class="text-center fs-1 fw-semibold">Our Recruiters</h2>
+        <p class="text-center pb-3">We take pride in our long-standing relationships with industry leaders who consistently<br> our campus to recruit the next generation of innovators and leaders.</p>
+        <ul class="recruiters-list list-unstyled d-flex flex-wrap justify-content-center gap-4">
+            <li>Google</li>
+            <li>Amazon</li>
+            <li>Microsoft</li>
+            <li>Tesla</li>
+            <li>JP Morgans</li>
+        </ul>
+    </div>
+</div>
+
+<div class="" id="testimonials">
+    <div class="container-sm pt-5 pb-5">
+        <h2 class="text-center fs-1 fw-semibold">Testimonials</h2>
+        <div class="d-flex justify-content-between">
+            <div class="box-1 border shadow">
+                <div class="5-star">
+                    <img style="z-index: -1; width: 140px; height: 100%;" src="{{ url_for('static', filename='images/stars.png') }}" alt="">
+                </div>
+                <p>The students we recruited from Nexus Institute of Science & Technology stood out for their exceptional problem-solving abilities and deep understanding of core engineering principles. The placement portal made the entire coordination process seamless, allowing us to focus on identifying the best technical talent for our Cloud and AI teams.</p>
+                <div class="recuter-info d-flex gap-2">
+                    <div class="image"></div>
+                    <div class="text">
+                        <p class="mb-0">John Doe</p>
+                        <p class="mb-0">Senior Talent Scout | Google</p>
+                    </div>
+                </div>
+            </div>
+            <div class="box-2 border shadow" >
+                <div class="5-star">
+                    <img style="z-index: -1; width: 140px; height: 100%;" src="{{ url_for('static', filename='images/stars.png') }}" alt="">
+                </div>
+                
+                <p>We were highly impressed by the 'Leadership Principles' demonstrated by the candidates during the campus drive. The students are not only technically sound but also possess the customer-centric mindset we value at Amazon. We look forward to a long-term partnership with this institute.</p>
+                <div class="recuter-info d-flex gap-2">
+                    <div class="image"></div>
+                    <div class="text">
+                        <p class="mb-0">Sarah Jenkins</p>
+                        <p class="mb-0">Senior Technical Recruiter | Amazon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
