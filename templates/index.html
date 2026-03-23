@@ -1,99 +1,201 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}NIST{% endblock %} {% block css%}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/index.css')}}"
+/>
+{% endblock %} {% block content%}
 
-{% block title %}NIST{% endblock %}
-
-{% block css%}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
-{% endblock %}
-
-{% block content%}
-
-<nav class="navbar navbar-expand-lg fixed-top border border-secondary-subtle rounded-pill mt-4 shadow mx-auto" style="max-width: 95%;">
-    <div class="container-fluid">
-        <a class="navbar-brand logo fw-bold me-auto" href="/">NIST</a>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title logo" id="offcanvasNavbarLabel">
-                    NIST
-                </h5>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-center gap-3 flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#recruiters">Recruiters</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#testimonials">Testimonials</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <a class="login-btn rounded-pill" href="{{ url_for('auth.login') }}" role="button">Login</a>
+<nav
+  class="navbar navbar-expand-lg fixed-top border border-secondary-subtle rounded-pill mt-4 shadow mx-auto"
+  style="max-width: 95%"
+>
+  <div class="container-fluid">
+    <a class="navbar-brand logo fw-bold me-auto" href="/">NIST</a>
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="offcanvasNavbar"
+      aria-labelledby="offcanvasNavbarLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title logo" id="offcanvasNavbarLabel">NIST</h5>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-center gap-3 flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#recruiters">Recruiters</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testimonials">Testimonials</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
+      </div>
     </div>
+    <a
+      class="login-btn rounded-pill"
+      href="{{ url_for('auth.login') }}"
+      role="button"
+      >Login</a
+    >
+  </div>
 </nav>
 
-<div style="min-height: 100vh;" class="container-lg d-flex align-items-center justify-content-center" id="sec-1">
-    <div class="home">
-      <div class="home-text">
-        <h1 class="text-center">Elevate Your Career,<br>Empower Your Future.</h1>
-      <p class="text-center pt-1" style="max-width: 590px;">The Official Training & Placement Portal of Nexus Institute of Science & Technology Connecting our brightest minds with industry leaders.</p>
-      </div>
-       <img class="student-img" style="z-index: -1;" src="{{ url_for('static', filename='images/student.png') }}" alt="">
+<div
+  style="min-height: 100vh"
+  class="container-lg d-flex align-items-center justify-content-center "
+  id="sec-1"
+>
+  <div class="home">
+    <div class="home-text">
+      <h1 class="text-center">
+        Elevate Your Career,<br />Empower Your Future.
+      </h1>
+      <p class="text-center pt-1" style="max-width: 590px">
+        The Official Training & Placement Portal of Nexus Institute of Science &
+        Technology Connecting our brightest minds with industry leaders.
+      </p>
     </div>
+    <img
+      class="student-img"
+      style="z-index: -1"
+      src="{{ url_for('static', filename='images/student.png') }}"
+      alt=""
+    />
+  </div>
 </div>
 <div class="recruiters" id="recruiters">
-    <div class="container-sm pt-5 pb-5">
-        <h2 class="text-center fs-1 fw-semibold">Our Recruiters</h2>
-        <p class="text-center pb-3">We take pride in our long-standing relationships with industry leaders who consistently<br> our campus to recruit the next generation of innovators and leaders.</p>
-        <ul class="recruiters-list list-unstyled d-flex flex-wrap justify-content-center gap-4">
-            <li>Google</li>
-            <li>Amazon</li>
-            <li>Microsoft</li>
-            <li>Tesla</li>
-            <li>JP Morgans</li>
-        </ul>
-    </div>
+  <div class="container-sm pt-5 pb-5">
+    <h2 class="text-center fs-1 fw-semibold">Our Recruiters</h2>
+    <p class="text-center pb-3">
+      We take pride in our long-standing relationships with industry leaders who
+      consistently<br />
+      our campus to recruit the next generation of innovators and leaders.
+    </p>
+    <ul
+      class="recruiters-list list-unstyled d-flex flex-wrap justify-content-center gap-4"
+    >
+      <li>Google</li>
+      <li>Amazon</li>
+      <li>Microsoft</li>
+      <li>Tesla</li>
+      <li>JP Morgans</li>
+    </ul>
+  </div>
 </div>
 
-<div class="" id="testimonials">
-    <div class="container-sm pt-5 pb-5">
-        <h2 class="text-center fs-1 fw-semibold">Testimonials</h2>
-        <div class="d-flex justify-content-between">
-            <div class="box-1 border shadow">
-                <div class="5-star">
-                    <img style="z-index: -1; width: 140px; height: 100%;" src="{{ url_for('static', filename='images/stars.png') }}" alt="">
-                </div>
-                <p>The students we recruited from Nexus Institute of Science & Technology stood out for their exceptional problem-solving abilities and deep understanding of core engineering principles. The placement portal made the entire coordination process seamless, allowing us to focus on identifying the best technical talent for our Cloud and AI teams.</p>
-                <div class="recuter-info d-flex gap-2">
-                    <div class="image"></div>
-                    <div class="text">
-                        <p class="mb-0">John Doe</p>
-                        <p class="mb-0">Senior Talent Scout | Google</p>
-                    </div>
-                </div>
+<div id="testimonials" class="bg-light">
+  <div class="container-sm py-5">
+    <h2 class="text-center fs-1 fw-semibold mb-5">Testimonials</h2>
+
+    <div class="row g-4">
+      
+      <!-- Card 1 -->
+      <div class="col-12 col-md-6">
+        <div class="p-4 border rounded-4 shadow-sm h-100 bg-white">
+          
+          <p class="mb-3">⭐️⭐️⭐️⭐️⭐️</p>
+
+          <p class="text-muted">
+            The students we recruited from Nexus Institute of Science & Technology
+            stood out for their exceptional problem-solving abilities and deep
+            understanding of core engineering principles. The placement portal
+            made the entire coordination process seamless.
+          </p>
+
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <img 
+              src="https://images.unsplash.com/photo-1623184663796-f0eb7e46d6ab?q=80&w=1712&auto=format&fit=crop"
+              class="rounded-circle"
+              width="50"
+              height="50"
+              style="object-fit: cover;"
+            />
+            <div>
+              <p class="mb-0 fw-semibold">John Doe</p>
+              <small class="text-muted">Senior Talent Scout | Google</small>
             </div>
-            <div class="box-2 border shadow" >
-                <div class="5-star">
-                    <img style="z-index: -1; width: 140px; height: 100%;" src="{{ url_for('static', filename='images/stars.png') }}" alt="">
-                </div>
-                
-                <p>We were highly impressed by the 'Leadership Principles' demonstrated by the candidates during the campus drive. The students are not only technically sound but also possess the customer-centric mindset we value at Amazon. We look forward to a long-term partnership with this institute.</p>
-                <div class="recuter-info d-flex gap-2">
-                    <div class="image"></div>
-                    <div class="text">
-                        <p class="mb-0">Sarah Jenkins</p>
-                        <p class="mb-0">Senior Technical Recruiter | Amazon</p>
-                    </div>
-                </div>
-            </div>
+          </div>
+
         </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-12 col-md-6">
+        <div class="p-4 border rounded-4 shadow-sm h-100 bg-white">
+          
+          <p class="mb-3">⭐️⭐️⭐️⭐️⭐️</p>
+
+          <p class="text-muted">
+            We were highly impressed by the 'Leadership Principles' demonstrated
+            by the candidates during the campus drive. The students are not only
+            technically sound but also possess the customer-centric mindset we
+            value at Amazon.
+          </p>
+
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <img 
+              src="https://plus.unsplash.com/premium_photo-1769839239459-25501472f308?q=80&w=1672&auto=format&fit=crop"
+              class="rounded-circle"
+              width="50"
+              height="50"
+              style="object-fit: cover;"
+            />
+            <div>
+              <p class="mb-0 fw-semibold">Sarah Jenkins</p>
+              <small class="text-muted">Senior Technical Recruiter | Amazon</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>
+
+<div id="about" style="background-color: black; color: white">
+  <div class="container-sm pt-5 pb-5 d-flex flex-column align-items-center justify-content-center">
+    <h2 class="mb-4">About NIST Placement Portal</h2>
+    <p>
+      The NIST Training & Placement Portal is a centralized platform designed to
+      bridge the gap between academic excellence and industry opportunities.
+      Built to support students, recruiters, and the institution alike, the
+      portal streamlines the entire placement process—making it transparent,
+      efficient, and student-centric. </br></br> At NIST, we believe that career
+      readiness goes beyond academics. Our focus is on nurturing technical
+      expertise, problem-solving skills, leadership qualities, and professional
+      ethics that align with real-world industry expectations. Through
+      structured training programs, continuous skill development, and strong
+      industry partnerships, we empower students to confidently step into their
+      professional journeys. </br></br> The portal serves as a single point of
+      interaction where students can track opportunities, recruiters can
+      identify top talent, and the institute can coordinate placement activities
+      seamlessly. With a growing network of leading organizations across various
+      domains, NIST is committed to creating meaningful career pathways and
+      long-term success for its students.
+    </p>
+  </div>
+</div>
+
+<div id="testimonials" class="bg-light">
+  <div class="container-sm">
+    <div class="d-flex flex-column flex-md-row align-items-baseline gap-2 pt-5">
+  <h1 class="logo fw-bold">NIST</h1>
+  <p class="mb-0">Nexus Institute of Science & Technology</p>
+</div>
+    <hr>
+    <p class="pb-4 mb-0 text-center" style="font-weight: 500;">&copy; 2026 Nexus Institute of Science & Technology. All Rights Reserved.</p>
+    <p class="pb-4 mb-0 text-center">
+      <strong>Disclaimer:</strong> This is a hypothetical portal created solely for the Modern Application Development 1 project (IIT Madras BS Data Science).
+    </p>
+  </div>
+</div>
+
 
 {% endblock %}
