@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Placement Drives{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drive_details.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<style>
+    p {
+        margin-bottom: 0;
+    }
+</style>
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+
+    <div class="main-box mt-5">
+        <div class="job-details d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-4">
+                <div class="img-box">
+                <img class="rounded-circle"
+                    src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
+            </div>
+            <div class="text-box">
+                <h3 style="font-size: 32px;">{{ company.company_name }}</h3>
+                <p><span>Job Title: </span>{{ drive.job_title }}</p>
+                <p><span>Location:</span> {{ drive.location }}</p>
+                <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
+                <p><span>Job Type:</span> {{ drive.job_type }}</p>
+                <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
+            </div>
+            </div>
+            {% if drive.status != 'approved' %}
+            <div class="edit-box">
+                <a href="#">
+                    <button style="background-color: #FFAE71; color: black; padding: 8px 20px;" type="submit"
+                        class="btn rounded-pill">
+                        Edit
+                    </button>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <hr class="mb-4">
+        <div class="job-desc">
+            <h4>Job Description</h4>
+            <p class="mb-4">{{ drive.job_description }}</p>
+        </div>
+        <div class="job-responsibility">
+            <h4>Key Responsibilities</h4>
+            <p class="mb-4">{{ drive.key_responsibility }}</p>
+        </div>
+        <div class="job-eligibility">
+            <h4>Eligibility Criteria</h4>
+            <p>{{ drive.eligible_degrees }} degree in {{ drive.preferred_departments }}</p>
+            <p>Minimum CGPA of {{ drive.cgpa }}/10</p>
+            <p class="mb-4">{{ drive.other_eligibility }}</p>
+        </div>
+        <div class="req-skills">
+            <h4>Required Technical Skills</h4>
+            <p class="mb-4">{{ drive.required_skills }}</p>
+        </div>
+        <div class="pref-skills">
+            <h4>Preferred Skills</h4>
+            <p class="mb-4">{{ drive.preferred_skills }}</p>
+        </div>
+        <div class="compensation_benefits">
+            <h4>Compensation & Benefits</h4>
+            <p class="mb-4">{{ drive.compensation_benefits }}</p>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

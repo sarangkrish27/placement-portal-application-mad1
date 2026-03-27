@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | Students{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+
+<div class="container-sm">
+    {% include 'admin_header.html' %}
+
+    <div style="height: 100vh;" class="section mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+  {{ msg }}
+</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        <div class="company-list mt-5">
+            <div class="row d-flex">
+                <div class="col-6">
+                    <h2>All Students</h2>
+                </div>
+                <div class="col-6">
+                    <form method="get" action="{{ url_for('admin.students') }}" id="filterForm" class="d-flex gap-3">
+                    
+                    <select name="filter-by-degree" class="form-select mb-4 rounded-pill" onchange="this.form.submit()">
+                    <option value="">Filter by Degree</option>
+                        <option value="BA" {% if request.args.get('filter-by-degree') == 'BA' %}selected{% endif %}>BA (Bachelor of Arts)</option>
+                        <option value="BCA" {% if request.args.get('filter-by-degree') == 'BCA' %}selected{% endif %}>BCA (Bachelor of Computer Applications)</option>
+                        <option value="BSc" {% if request.args.get('filter-by-degree') == 'BSc' %}selected{% endif %}>BSc (Bachelor of Science)</option>
+                        <option value="BS" {% if request.args.get('filter-by-degree') == 'BS' %}selected{% endif %}>BS (Bachelor of Science)</option>
+                        <option value="BTech" {% if request.args.get('filter-by-degree') == 'Btech' %}selected{% endif %}>BTech (Bachelor of Technology)</option>
+                        <option value="MCA" {% if request.args.get('filter-by-degree') == 'MCA' %}selected{% endif %}>MCA (Master of Computer Applications)</option>
+                        <option value="MSc" {% if request.args.get('filter-by-degree') == 'MSc' %}selected{% endif %}>MSc (Master of Science)</option>
+                        <option value="MS" {% if request.args.get('filter-by-degree') == 'MS' %}selected{% endif %}>MS (Master of Science)</option>
+                        <option value="MTech" {% if request.args.get('filter-by-degree') == 'MTech' %}selected{% endif %}>MTech (Master of Technology)</option>
+                        <option value="PhD" {% if request.args.get('filter-by-degree') == 'PhD' %}selected{% endif %}>PhD (Doctor of Philosophy)</option>
+                </select>
+                    <select name="filter-by-department" class="form-select mb-4 rounded-pill" onchange="this.form.submit()">
+                    <option value="">Filter by Department</option>
+                        <option value="Artificial Intelligence" {% if request.args.get('filter-by-department') == 'Artificial Intelligence' %}selected{% endif %}>Artificial Intelligence</option>
+                        <option value="Bioinformatics" {% if request.args.get('filter-by-department') == 'Bioinformatics' %}selected{% endif %}>Bioinformatics</option>
+                        <option value="Computer Engineering" {% if request.args.get('filter-by-department') == 'Computer Engineering' %}selected{% endif %}>Computer Engineering</option>
+                        <option value="Computer Science" {% if request.args.get('filter-by-department') == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                        <option value="Cybersecurity" {% if request.args.get('filter-by-department') == 'Cybersecurity' %}selected{% endif %}>Cybersecurity</option>
+                        <option value="Data Analytics" {% if request.args.get('filter-by-department') == 'Data Analytics' %}selected{% endif %}>Data Analytics</option>
+                        <option value="Data Science" {% if request.args.get('filter-by-department') == 'Data Science' %}selected{% endif %}>Data Science</option>
+                        <option value="Information Technology" {% if request.args.get('filter-by-department') == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                        <option value="Machine Learning" {% if request.args.get('filter-by-department') == 'Machine Learning' %}selected{% endif %}>Machine Learning</option>
+                        <option value="Robotics" {% if request.args.get('filter-by-department') == 'Robotics' %}selected{% endif %}>Robotics</option>
+                        <option value="Software Engineering" {% if request.args.get('filter-by-department') == 'Software Engineering' %}selected{% endif %}>Software Engineering</option>
+                        <option value="Web Technologies" {% if request.args.get('filter-by-department') == 'Web Technologies' %}selected{% endif %}>Web Technologies</option>
+                </select>
+                </form>
+                </div>
+            </div>
+            {% if students %}
+            {% for student in students %}
+            <div class="layout-row row mt-4 mx-1 align-items-center">
+            <div class="col-12 col-md-8 d-flex align-items-center">
+                <div class="img-box flex-shrink-0">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + student.profile_filename) }}" alt="">
+                </div>
+                <div class="text ms-3">
+                    <div class="box d-flex align-items-center gap-3 mb-2">
+                        <h5 class="mb-0">{{ student.name }}</h5>
+                    {% if student.user.is_blacklisted == 1 %}
+                        {% set status = 'Blacklisted' %}
+                        {% include 'rejected_label.html' %}
+                    {% endif %}
+                    </div>
+                    <p class="mb-0">{{ student.degree }} | {{ student.department }}</p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end align-items-center">
+                <a href="{{ url_for('admin.studentDetails', student_id=student.id) }}">
+                    <button style="background-color: black; color: white;" class="shadow primary-btn">
+                        View Details
+                    </button>
+                </a>
+            </div>
+        </div>
+            {% endfor %}
+            {% else %}
+            <div style="height: 80vh;" class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <p class="text-secondary">No students found</p>
+        </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

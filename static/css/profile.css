@@ -1,0 +1,85 @@
+.img-box {
+    width: 250px;
+}
+
+.img-box img {
+    height: 250px;
+    border-radius: 50%;
+}
+
+.main-box {
+    height: 80vh;
+}
+
+.edit-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #FFAE71;
+    border: 2px solid #D35B1F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.name h2 {
+    color: #D35B1F;
+    font-size: 3rem;
+}
+
+.info-box p {
+    font-size: 1.5rem;
+}
+
+.form-select {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+}
+
+.form-select:focus {
+    border-color: #000 !important;
+    box-shadow: none !important;
+    outline: none;
+}
+
+.custom-btn{
+    background-color: #D35B1F;
+    color: white;
+    border: 1px solid transparent;   /* added */
+    padding: 8px 20px;
+}
+
+.custom-btn:hover{
+    background-color: white;
+    color: #D35B1F;
+    border: 1px solid #D35B1F;
+}
+
+
+@media (max-width: 576px) {
+    .img-box {
+        width: 140px;
+    }
+
+    .img-box img {
+        height: 140px;
+    }
+    .name h2 {
+        font-size: 2rem;
+    }
+    .info-box {
+        width: 100%;
+    }
+    .info-box p {
+        font-size: 1rem;
+    }
+    .edit-btn,
+    .btn-dark {
+        width: 100%;
+    }
+}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | {{ student.name }} Details{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+
+<div class="container-sm">
+  {% include 'admin_header.html' %}
+
+  <div style="min-height: 100vh;" class="main-box mt-5">
+     {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    <div class="row">
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <a href="#">
+          <button type="button" class="btn btn-dark rounded-pill">Edit</button>
+        </a>
+        {% if student.user.is_blacklisted %}
+        <a href="{{ url_for('admin.userRevokeBlacklist', uid=student.uid) }}">
+          <button type="button" class="btn btn-warning rounded-pill">
+          Revoke Blacklist
+        </button>
+        </a>
+        {% else %}
+        <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+          data-bs-target="#blacklistModel">
+          Blacklist
+        </button>
+        {% endif %}
+        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteModel">
+          Delete
+        </button>
+      </div>
+    </div>
+    <div class="row main-box mt-3">
+      <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-4" justify-content-center
+                align-items-center">
+        <div class="img-box">
+          <img class="preview-image"
+            src="{{ url_for('static', filename='uploads/profiles/' + student.profile_filename) }}"
+            alt="profile picture">
+        </div>
+        <div class="name">
+          <h2 class="fw-semibold text-center">{{ student.name }}</h2>
+          <h6 class="text-secondary text-center">{{ student.user.email }}</h6>
+        </div>
+
+        <div class="resume-box">
+          <a href="{{ url_for('static', filename='uploads/resumes/' + student.resume_filename) }}" target="_blank"
+            rel="noopener noreferrer">
+            <button type="button" class="btn btn-secondary rounded-pill">View Resume</button>
+          </a>
+        </div>
+
+      </div>
+
+      <div class="info-box col-6 d-flex flex-column justify-content-center">
+        <p><span class="fw-medium">Degree:</span> {{ student.degree }}</p>
+        <p><span class="fw-medium">Department:</span> {{ student.department }}</p>
+        <p><span class="fw-medium">Year of Study:</span> {{ student.yos }}</p>
+        <p><span class="fw-medium">CGPA:</span> {{ student.cgpa }}/10</p>
+        {% if student.user.is_blacklisted %}
+        <p><span class="fw-medium">Status:</span> Blacklisted</p>
+        <p><span class="fw-medium">Reason:</span> {{ student.user.blacklist_reason }}</p>
+        {% endif %}
+
+        <a href="{{ url_for('admin.studentApplications', student_id=student.id) }}"><button type="button" class="btn btn-dark rounded-pill mb-3">View applications</button></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<form action="{{ url_for('admin.userBlacklist', uid=student.uid) }}" method="post">
+  <div class="modal fade" id="blacklistModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm blacklist</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="reason-input">
+            <p>Enter the reason:</p>
+            <textarea style="height: 160px; border-radius: 32px;" name="reason" class="big-input w-100 ps-3 mb-4"
+              placeholder="Enter the reason" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-warning" value="Blacklist">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<form action="{{ url_for('admin.userDelete', uid=student.uid) }}" method="post">
+  <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Deletion is permanent and cannot be reversed.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-danger" value="Delete">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% include 'footer.html' %}
+{% endblock %}

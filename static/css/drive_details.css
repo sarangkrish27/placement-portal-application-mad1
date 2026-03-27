@@ -1,0 +1,12 @@
+.img-box img {
+    height: 120px;
+    width: 120px;
+}
+
+span {
+    font-weight: 600;
+}
+
+@media (max-width: 576px) {
+    
+}

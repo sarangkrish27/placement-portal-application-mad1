@@ -1,0 +1,47 @@
+/* Add these styles to your company_create_drive.css file */
+
+.form-box label {
+    padding-bottom: 5px;
+    margin-top: 10px;
+}
+
+.form-box input {
+    height: 48px;
+    border: 1px solid #222;
+}
+
+.form-box input[type="submit"] {
+    height: 50px;
+    background-color: black;
+    color: white;
+    font-weight: 500;
+}
+
+.form-select,
+.form-control {
+    height: 48px;
+    border: 1px solid #000;
+    box-shadow: none;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #000;
+    box-shadow: none;
+}
+
+#multiple_select {
+    border-radius: 32px;
+    min-height: 160px;
+}
+
+#multiple_select option:checked {
+    background-color: #FFAE71; /* Bootstrap green */
+    color: white;
+}
+
+#multiple_select:focus {
+    border-color: #FFAE71;
+    box-shadow: 0 0 0 0.25rem #FFAE71;
+}
+

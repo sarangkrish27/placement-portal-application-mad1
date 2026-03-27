@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ company.company_name }} | Placement Drives{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/company_drives.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div class="main-box mt-5" style="min-height: 100vh;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+  {{ msg }}
+</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        <div class="btn-row d-flex justify-content-end">
+            <a href="{{ url_for('company.createDrive') }}">
+                <button class="drive-btn rounded-pill shadow">
+            Create new drive
+        </button>
+            </a>
+        </div>
+        {% if not drives %}
+        <div class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <img style="height: 250px;" src="{{ url_for('static', filename='images/no-data.svg') }}" alt="">
+            <p class="text-secondary">You have not created any placement drives yet.</p>
+        </div>
+        {% else %}
+        <div style="height: 80vh;">
+            {% for drive in drives %}
+                <div class="drive-row row mt-3">
+                <div class="col d-flex align-items-center">
+                    <div class="text ms-4">
+                        <div class="box d-flex align-items-center gap-4 mb-2">
+                            <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
+                            {% if drive.status == 'pending' %}
+                                {% set status = 'Pending' %}
+                                {% include 'low_label.html' %}
+                            {% elif drive.status == 'approved' %}
+                                {% set status = 'Approved' %}
+                                {% include 'high_label.html' %}
+                            {% else %}
+                                {% set status = 'Rejected' %}
+                                {% include 'rejected_label.html' %}
+                            {% endif %}
+                        </div>
+                        <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('company.driveDetails', drive_id=drive.id) }}">
+                        <button class="shadow">
+                        View Detail
+                    </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

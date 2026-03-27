@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, SubmitField, StringField, SelectField, IntegerField, DecimalField, FileField, URLField
+from wtforms import EmailField, PasswordField, SubmitField, StringField, SelectField, IntegerField, DecimalField, FileField, URLField, TextAreaField, SelectMultipleField, DateField
 from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, NumberRange, URL
+from wtforms.widgets import CheckboxInput, ListWidget
 from flask_wtf.file import FileAllowed, FileSize
 
 class LoginForm(FlaskForm):
@@ -131,3 +132,125 @@ class CompanyProfileForm(FlaskForm):
     )
 
     submit = SubmitField("Save changes")
+
+class MultiCheckboxField(SelectMultipleField):
+    """A SelectMultipleField rendered as a list of checkboxes."""
+    widget = ListWidget(prefix_label=False)
+    option_widget = CheckboxInput()
+ 
+ 
+DEGREE_CHOICES = [
+    ('BTech', 'BTech'),
+    ('BS', 'BS'),
+    ('BSc', 'BSc'),
+    ('BCA', 'BCA'),
+    ('MTech', 'MTech'),
+    ('MS', 'MS'),
+    ('MSc', 'MSc'),
+    ('MCA', 'MCA'),
+]
+ 
+DEPARTMENT_CHOICES = [
+    ('Artificial Intelligence', 'Artificial Intelligence'),
+    ('Bioinformatics', 'Bioinformatics'),
+    ('Computer Engineering', 'Computer Engineering'),
+    ('Computer Science', 'Computer Science'),
+    ('Cybersecurity', 'Cybersecurity'),
+    ('Data Analytics', 'Data Analytics'),
+    ('Data Science', 'Data Science'),
+    ('Information Technology', 'Information Technology'),
+    ('Machine Learning', 'Machine Learning'),
+    ('Robotics', 'Robotics'),
+    ('Software Engineering', 'Software Engineering'),
+    ('Web Technologies', 'Web Technologies'),
+]
+ 
+WORK_MODE_CHOICES = [
+    ('', 'Select Work Mode'),
+    ('On-Site', 'On-Site'),
+    ('Remote', 'Remote'),
+    ('Hybrid', 'Hybrid'),
+]
+ 
+JOB_TYPE_CHOICES = [
+    ('', 'Select Job Type'),
+    ('Full-Time', 'Full-Time'),
+    ('Internship', 'Internship'),
+    ('Part-Time', 'Part-Time'),
+    ('Contract', 'Contract'),
+]
+ 
+ 
+class PlacementDriveForm(FlaskForm):
+    job_title = StringField(
+        'Job Title',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Job Title'}
+    )
+    job_location = StringField(
+        'Location',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Location'}
+    )
+    job_mode = SelectField(
+        'Work Mode',
+        choices=WORK_MODE_CHOICES,
+        validators=[DataRequired()]
+    )
+    job_type = SelectField(
+        'Job Type',
+        choices=JOB_TYPE_CHOICES,
+        validators=[DataRequired()]
+    )
+    job_description = TextAreaField(
+        'Job Description',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Job Description'}
+    )
+    key_responsibility = TextAreaField(
+        'Key Responsibilities',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Key Responsibilities'}
+    )
+    eligible_degrees = SelectMultipleField(
+        'Eligible Degree(s)',
+        choices=DEGREE_CHOICES,
+        validators=[DataRequired()]
+    )
+    preferred_departments = SelectMultipleField(
+        'Preferred Department(s)',
+        choices=DEPARTMENT_CHOICES,
+        validators=[DataRequired()]
+    )
+
+    cgpa = DecimalField(
+        'Minimum CGPA',
+        validators=[DataRequired(), NumberRange(min=0, max=10)],
+        places=2
+    )
+    other_eligibility = TextAreaField(
+        'Other Eligibility',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Other Eligibility'}
+    )
+    required_skills = TextAreaField(
+        'Required Technical Skills',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Required Technical Skills'}
+    )
+    preferred_skills = TextAreaField(
+        'Preferred Skills',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Preferred Skills'}
+    )
+    compensation_benefits = TextAreaField(
+        'Compensation & Benefits',
+        validators=[DataRequired()],
+        render_kw={'placeholder': 'Enter Compensation & Benefits'}
+    )
+    application_deadline = DateField(
+        'Application Deadline',
+        validators=[DataRequired()]
+    )
+    submit = SubmitField('Create Drive')
+ 

@@ -39,7 +39,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-end align-items-center">
-                    <a href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
+                    <a
+                        href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
                         <button style="background-color: black; color: white;" class="shadow rounded-pill primary-btn">
                             Know More
                         </button>
@@ -51,31 +52,115 @@
         </div>
         {% endif %}
 
-            <div class="company-list mt-5">
-            <h2>All Companies</h2>
+        <div class="company-list mt-5">
+            <div class="row d-flex">
+                <div class="col-6">
+                    <h2>All Companies</h2>
+                </div>
+                <div class="col-6">
+                    <form method="get" action="{{ url_for('admin.companies') }}" id="filterForm" class="d-flex gap-3">
+
+                        <select name="filter-by-industry" class="form-select mb-4 rounded-pill"
+                            onchange="this.form.submit()">
+                            <option value="">Filter by Industry</option>
+                            <option value="Information Technology Services" {% if
+                                request.args.get('filter-by-industry')=='Information Technology Services' %}selected{%
+                                endif %}>Information Technology Services</option>
+                            <option value="Software Development & Engineering" {% if
+                                request.args.get('filter-by-industry')=='Software Development & Engineering'
+                                %}selected{% endif %}>Software Development & Engineering</option>
+                            <option value="Artificial Intelligence & Machine Learning" {% if
+                                request.args.get('filter-by-industry')=='Artificial Intelligence & Machine Learning'
+                                %}selected{% endif %}>Artificial Intelligence & Machine Learning</option>
+                            <option value="Data Science & Analytics" {% if
+                                request.args.get('filter-by-industry')=='Data Science & Analytics' %}selected{% endif
+                                %}>Data Science & Analytics</option>
+                            <option value="Cybersecurity & Network Security" {% if
+                                request.args.get('filter-by-industry')=='Cybersecurity & Network Security' %}selected{%
+                                endif %}>Cybersecurity & Network Security</option>
+                            <option value="Cloud Computing & DevOps" {% if
+                                request.args.get('filter-by-industry')=='Cloud Computing & DevOps' %}selected{% endif
+                                %}>Cloud Computing & DevOps</option>
+                            <option value="Web & Mobile Application Development" {% if
+                                request.args.get('filter-by-industry')=='Web & Mobile Application Development'
+                                %}selected{% endif %}>Web & Mobile Application Development</option>
+                            <option value="Product-Based Technology Companies" {% if
+                                request.args.get('filter-by-industry')=='Product-Based Technology Companies'
+                                %}selected{% endif %}>Product-Based Technology Companies</option>
+                            <option value="Robotics & Automation" {% if
+                                request.args.get('filter-by-industry')=='Robotics & Automation' %}selected{% endif %}>
+                                Robotics & Automation</option>
+                            <option value="Internet of Things (IoT)" {% if
+                                request.args.get('filter-by-industry')=='Internet of Things (IoT)' %}selected{% endif
+                                %}>Internet of Things (IoT)</option>
+                            <option value="Bioinformatics & Health Technology" {% if
+                                request.args.get('filter-by-industry')=='Bioinformatics & Health Technology'
+                                %}selected{% endif %}>Bioinformatics & Health Technology</option>
+                            <option value="FinTech" {% if request.args.get('filter-by-industry')=='FinTech' %}selected{%
+                                endif %}>FinTech</option>
+                            <option value="EdTech" {% if request.args.get('filter-by-industry')=='EdTech' %}selected{%
+                                endif %}>EdTech</option>
+                            <option value="E-Commerce & Digital Platforms" {% if
+                                request.args.get('filter-by-industry')=='E-Commerce & Digital Platforms' %}selected{%
+                                endif %}>E-Commerce & Digital Platforms</option>
+                            <option value="Gaming & Simulation" {% if
+                                request.args.get('filter-by-industry')=='Gaming & Simulation' %}selected{% endif %}>
+                                Gaming & Simulation</option>
+                            <option value="Telecommunications" {% if
+                                request.args.get('filter-by-industry')=='Telecommunications' %}selected{% endif %}>
+                                Telecommunications</option>
+                            <option value="Embedded Systems & Hardware Design" {% if
+                                request.args.get('filter-by-industry')=='Embedded Systems & Hardware Design'
+                                %}selected{% endif %}>Embedded Systems & Hardware Design</option>
+                            <option value="Research & Development (R&D)" {% if
+                                request.args.get('filter-by-industry')=='Research & Development (R&D)' %}selected{%
+                                endif %}>Research & Development (R&D)</option>
+                            <option value="Consulting & Professional Services" {% if
+                                request.args.get('filter-by-industry')=='Consulting & Professional Services'
+                                %}selected{% endif %}>Consulting & Professional Services</option>
+                            <option value="Startup & Innovation Ecosystem" {% if
+                                request.args.get('filter-by-industry')=='Startup & Innovation Ecosystem' %}selected{%
+                                endif %}>Startup & Innovation Ecosystem</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            {% if all_company %}
             {% for company in all_company %}
-            <div class="layout-row row mt-3 mx-1">
-                <div class="col d-flex align-items-center">
-                    <div class="img-box">
+            <div class="layout-row row mt-4 mx-1 align-items-center">
+                <div class="col-12 col-md-8 d-flex align-items-center">
+                    <div class="img-box flex-shrink-0">
                         <img class="rounded-circle"
                             src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
                             alt="">
                     </div>
-                    <div class="text ms-4">
-                        <h5>{{ company.company_name }}</h5>
+                    <div class="text ms-3">
+                        <div class="box d-flex align-items-center gap-3 mb-2">
+                            <h5 class="mb-0">{{ company.company_name }}</h5>
+                            {% if company.user.is_blacklisted == 1 %}
+                            {% set status = 'Blacklisted' %}
+                            {% include 'rejected_label.html' %}
+                            {% endif %}
+                        </div>
                         <p>{{ company.industry }}</p>
                     </div>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <a href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
+                    <a
+                        href="{{ url_for('admin.companyDetails', company_id=company.uid, company_name=company.company_name) }}">
                         <button style="background-color: black; color: white;" class="shadow rounded-pill primary-btn">
                             View Details
                         </button>
                     </a>
                 </div>
-
             </div>
             {% endfor %}
+            {% else %}
+            <div style="height: 80vh;" class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <img style="height: 250px;" src="{{ url_for('static', filename='images/no-data.svg') }}" alt="">
+            <p class="text-secondary">No company found</p>
+        </div>
+            {% endif %}
         </div>
     </div>
 

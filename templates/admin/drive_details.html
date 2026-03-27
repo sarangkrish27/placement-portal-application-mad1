@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | {{ drive.company.company_name}} | {{ drive.job_title }}{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drive_details.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<style>
+    .text-box p {
+        margin-bottom: 0;
+    }
+</style>
+
+
+<div class="container-sm">
+    {% include 'admin_header.html' %}
+    
+    <div class="main-box mt-5">
+        <div class="job-details row align-items-start">
+    
+    <div class="col-12 col-md-8 d-flex align-items-center gap-3 mb-3 mb-md-0">
+        <div class="img-box">
+            <img class="rounded-circle"
+                src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}" alt="">
+        </div>
+
+        <div class="text-box">
+            <h3 style="font-size: 32px;">{{ drive.company.company_name }}</h3>
+            <p><span>Job Title: </span>{{ drive.job_title }}</p>
+            <p><span>Location:</span> {{ drive.location }}</p>
+            <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
+            <p><span>Job Type:</span> {{ drive.job_type }}</p>
+            <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
+            {% if drive.status == 'closed' %}
+                <p class="text-danger fw-bold">Application CLOSED</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if drive.status != 'pending' %}
+    <div class="col-12 col-md-4 d-flex justify-content-md-end">
+        <a href="{{ url_for('admin.driveApplications', drive_id=drive.id) }}">
+            <button type="button" class="btn btn-dark rounded-pill mb-3 w-100 w-md-auto">
+                View applications
+            </button>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+        <hr class="mb-4">
+        <div class="job-desc">
+            <h4>Job Description</h4>
+            <p class="mb-4">{{ drive.job_description }}</p>
+        </div>
+        <div class="job-responsibility">
+            <h4>Key Responsibilities</h4>
+            <p class="mb-4">{{ drive.key_responsibility }}</p>
+        </div>
+        <div class="job-eligibility">
+            <h4>Eligibility Criteria</h4>
+            <p>{{ drive.eligible_degrees }} degree in {{ drive.preferred_departments }}</p>
+            <p>Minimum CGPA of {{ drive.cgpa }}/10</p>
+            <p class="mb-4">{{ drive.other_eligibility }}</p>
+        </div>
+        <div class="req-skills">
+            <h4>Required Technical Skills</h4>
+            <p class="mb-4">{{ drive.required_skills }}</p>
+        </div>
+        <div class="pref-skills">
+            <h4>Preferred Skills</h4>
+            <p class="mb-4">{{ drive.preferred_skills }}</p>
+        </div>
+        <div class="compensation_benefits">
+            <h4>Compensation & Benefits</h4>
+            <p class="mb-4">{{ drive.compensation_benefits }}</p>
+        </div>
+    </div>
+        {% if drive.status == 'pending' %}
+        <div class="btn-box d-flex justify-content-end gap-3">
+            <form action="{{ url_for('reject_drive', drive_id=drive.id) }}" method="POST">
+        <button type="submit" class="btn rounded-pill btn-danger">
+            Reject
+        </button>
+    </form>
+            <form action="{{ url_for('approve_drive', drive_id=drive.id) }}" method="POST">
+        <button type="submit" class="btn rounded-pill btn-success">
+            Approve
+        </button>
+    </form>
+        </div>
+    {% endif %}
+    </div>
+
+    
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

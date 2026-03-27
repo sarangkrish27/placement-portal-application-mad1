@@ -1,0 +1,74 @@
+.search-row {
+    row-gap: 12px;
+}
+input[type='text'] {
+    height: 48px;
+    border: 1px solid black;
+}
+
+input[type="submit"] {
+    width: 150px;
+    height: 48px;
+    padding: 8px 20px;
+    background-color: black;
+    border: none;
+    color: white;
+    font-weight: 500;
+}
+
+select.form-select,
+input.form-control {
+    height: 48px;
+    border: 1px solid #000 !important;
+}
+
+
+select.form-select:focus,
+input.form-control:focus {
+    border-color: #000;
+    box-shadow: none;
+}
+
+.layout-row {
+    min-height: 140px;
+    padding: 16px;
+    border: 1px solid black;
+    border-radius: 44px;
+}
+
+.img-box {
+    height: 100px;
+    width: 100px;
+}
+
+.img-box img {
+    width: 100%;
+}
+
+.col button {
+    background-color: white;
+    padding: 8px 20px;
+    border: 1px solid black;
+    border-radius: 44px;
+    margin-right: 10px;
+}
+
+@media (max-width: 576px) {
+
+    .img-box {
+        width: 64px;
+        height: 64px;
+    }
+
+    .layout-row h5 {
+        font-size: 1rem;
+    }
+
+    .layout-row p {
+        font-size: 0.9rem;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+    }
+}

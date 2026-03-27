@@ -24,7 +24,7 @@
                     <p class="mb-0">HR Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
                     <p class="mb-0">Website: <a href="{{ company.website }}">{{ company.website }}</a></p>
                     {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
-                    <a style="color: #D35B1F;" href="#">View drives</a>
+                    <a style="color: #D35B1F;" href="{{ url_for('admin.companyDrives', company_id=company.id) }}">View drives</a>
                     {% endif %}
                     {% if company.user.is_blacklisted %}
                     <p class="mb-0">Status: Blacklisted</p>
@@ -35,12 +35,12 @@
             <div class="action-box col-12 col-md-4 mt-3 mt-md-0">
                 {% if company.approval_status == 'pending' %}
                 <div class="btn-box d-flex justify-content-end gap-3">
-                    <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
+                    <form action="{{ url_for('reject_company', company_id=company.id) }}" method="POST">
                         <button type="submit" class="btn rounded-pill btn-danger">
                             Reject
                         </button>
                     </form>
-                    <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
+                    <form action="{{ url_for('approve_company', company_id=company.id) }}" method="POST">
                         <button type="submit" class="btn rounded-pill btn-success">
                             Approve
                         </button>
@@ -52,10 +52,18 @@
             justify-content-start justify-content-md-end">
                         <a href="#"><button type="button"
                                 class="btn btn-dark rounded-pill">Edit</button></a>
-                        <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#blacklistModel">
-                            Blacklist
-                        </button>
+                        {% if company.user.is_blacklisted %}
+        <a href="{{ url_for('admin.userRevokeBlacklist', uid=company.uid) }}">
+          <button type="button" class="btn btn-warning rounded-pill">
+          Revoke Blacklist
+        </button>
+        </a>
+        {% else %}
+        <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+          data-bs-target="#blacklistModel">
+          Blacklist
+        </button>
+        {% endif %}
                         <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
                             data-bs-target="#deleteModel">
                             Delete
