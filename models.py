@@ -135,11 +135,3 @@ def update_drive_status():
     
     if expired_drive:
         db.session.commit()
-
-def reset_application_status_on_blacklist():
-    all_applications = Application.query.all()
-
-    for application in all_applications:
-        if application.student.user.is_blacklisted:
-            db.session.delete(application)
-    db.session.commit()

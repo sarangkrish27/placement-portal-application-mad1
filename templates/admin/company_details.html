@@ -27,29 +27,35 @@
                         src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
                 </div>
                 <div class="text-box ps-4">
-                    <h5 style="color: #D35B1F;" class="fw-semibold company-name">{{ company.company_name }}</h5>
+                    <h5 style="color: #D35B1F;" class="company-name">{{ company.company_name }}</h5>
                     <p class="mb-0">{{ company.industry }}</p>
                     <p class="mb-0">HR Name: {{ company.hr_name }}</p>
                     <p class="mb-0">HR Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
                     <p class="mb-0">Website: <a href="{{ company.website }}">{{ company.website }}</a></p>
                     {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
-                    <a style="color: #D35B1F;" href="{{ url_for('admin.companyDrives', company_id=company.id) }}">View drives</a>
+                    <a style="color: #D35B1F;" href="{{ url_for('admin.companyDrives', company_id=company.id) }}">
+                        View drives
+                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+</svg>
+                    </a>
                     {% endif %}
                     {% if company.user.is_blacklisted %}
-                    <p class="mb-0">Status: Blacklisted</p>
-                    <p class="mb-0">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
+                    <p class="mb-0 text-danger fw-bold">Status: Blacklisted</p>
+                    <p class="mb-0 text-danger fw-bold">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
                     {% endif %}
                 </div>
             </div>
             <div class="action-box col-12 col-md-4 mt-3 mt-md-0">
                 {% if company.approval_status == 'pending' %}
                 <div class="btn-box d-flex justify-content-end gap-3">
-                    <form action="{{ url_for('reject_company', company_id=company.id) }}" method="POST">
+                    <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
                         <button type="submit" class="btn rounded-pill btn-danger">
                             Reject
                         </button>
                     </form>
-                    <form action="{{ url_for('approve_company', company_id=company.id) }}" method="POST">
+                    <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
                         <button type="submit" class="btn rounded-pill btn-success">
                             Approve
                         </button>

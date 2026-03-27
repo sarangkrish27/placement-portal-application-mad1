@@ -28,7 +28,13 @@
         </div>
 
         <div class="text-box">
-            <h3 style="font-size: 32px;">{{ drive.company.company_name }}</h3>
+            <a style="font-size: 32px; color: #D35B1F;" href="{{ url_for('admin.companyDetails', company_name= drive.company.company_name) }}" class="d-flex align-items-center gap-2 text-decoration-none">
+                <h3>{{ drive.company.company_name }}</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+</svg>
+            </a>
             <p><span>Job Title: </span>{{ drive.job_title }}</p>
             <p><span>Location:</span> {{ drive.location }}</p>
             <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
@@ -37,11 +43,21 @@
             {% if drive.status == 'closed' %}
                 <p class="text-danger fw-bold">Application CLOSED</p>
             {% endif %}
+            {% if drive.company.user.is_blacklisted %}
+                <p class="text-danger fw-bold">Drive not available to public, as comapny is blacklisted. Reason: {{ drive.company.user.blacklist_reason }}</p>
+            {% endif %}
         </div>
     </div>
 
     {% if drive.status != 'pending' %}
     <div class="col-12 col-md-4 d-flex justify-content-md-end">
+        <a href="{{ url_for('admin.editCompany', company_id=drive.company.id) }}">
+        <button type="button"class="btn btn-dark rounded-pill">Edit</button>
+    </a>
+    <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#deleteModel">
+                            Delete
+                        </button>
         <a href="{{ url_for('admin.driveApplications', drive_id=drive.id) }}">
             <button type="button" class="btn btn-dark rounded-pill mb-3 w-100 w-md-auto">
                 View applications
@@ -82,12 +98,12 @@
     </div>
         {% if drive.status == 'pending' %}
         <div class="btn-box d-flex justify-content-end gap-3">
-            <form action="{{ url_for('reject_drive', drive_id=drive.id) }}" method="POST">
+            <form action="{{ url_for('admin.reject_drive', drive_id=drive.id) }}" method="POST">
         <button type="submit" class="btn rounded-pill btn-danger">
             Reject
         </button>
     </form>
-            <form action="{{ url_for('approve_drive', drive_id=drive.id) }}" method="POST">
+            <form action="{{ url_for('admin.approve_drive', drive_id=drive.id) }}" method="POST">
         <button type="submit" class="btn rounded-pill btn-success">
             Approve
         </button>
@@ -98,6 +114,27 @@
 
     
 </div>
+
+
+<form action="{{ url_for('admin.userDelete', uid=drive.company.uid) }}" method="post">
+    <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Deletion is permanent and cannot be reversed.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 {% include 'footer.html' %}
 {% endblock %}

@@ -30,11 +30,10 @@ def create_app():
     register_blueprints(app)
 
     with app.app_context():
-        from models import User, update_drive_status, reset_application_status_on_blacklist
+        from models import User, update_drive_status
         
         db.create_all()
         update_drive_status()
-        reset_application_status_on_blacklist()
 
         admin = User.query.filter_by(role='admin').first()
         if not admin:
