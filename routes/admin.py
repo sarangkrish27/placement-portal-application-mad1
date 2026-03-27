@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from forms import CompanyProfileForm, PlacementDriveForm
 from auth_decorators import admin_required
 from models import db, User, Student, Company, PlacementDrive, Application
 from app import bcrypt
 from datetime import datetime
 from utils import greet
+from werkzeug.utils import secure_filename
+import os
+import uuid
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -125,6 +129,33 @@ def companyDetails(company_name):
     company = Company.query.filter_by(company_name=company_name).first()
     user = User.query.filter_by(id=company.uid).first()
     return render_template('admin/company_details.html', user=user, company=company)
+
+@admin_bp.route('/<int:company_id>/edit', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def editCompany(company_id):
+    company = Company.query.filter_by(id=company_id).first()
+    form = CompanyProfileForm(obj=company)
+    if form.validate_on_submit():
+        profile = form.profile.data
+        if profile and profile.filename:
+            original_name = secure_filename(profile.filename)
+            ext = os.path.splitext(original_name)[1]
+            profile_filename = f"{uuid.uuid4().hex}{ext}"
+            save_path = os.path.join("static/uploads", "profiles", profile_filename)
+            profile.save(save_path)
+            company.profile_filename = profile_filename
+
+        company.company_name = form.company_name.data
+        company.description = form.description.data
+        company.industry = form.industry.data
+        company.hr_name = form.hr_name.data
+        company.website = form.website.data
+
+        db.session.commit()
+        flash('Profile updated successfully', 'success')
+        return redirect(url_for('admin.companyDetails', company_name=company.company_name))
+    return render_template('/admin/company_edit_profile.html', form=form, company=company)
 
 @admin_bp.route('/admin/drives/<int:company_id>')
 @login_required
