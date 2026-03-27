@@ -20,6 +20,15 @@
     
     <div class="main-box mt-5">
         <div class="job-details row align-items-start">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     
     <div class="col-12 col-md-8 d-flex align-items-center gap-3 mb-3 mb-md-0">
         <div class="img-box">
@@ -44,26 +53,34 @@
                 <p class="text-danger fw-bold">Application CLOSED</p>
             {% endif %}
             {% if drive.company.user.is_blacklisted %}
-                <p class="text-danger fw-bold">Drive not available to public, as comapny is blacklisted. Reason: {{ drive.company.user.blacklist_reason }}</p>
+                <p class="text-danger fw-bold">
+    This drive is unavailable as the company has been blacklisted. Reason: {{ drive.company.user.blacklist_reason }}
+</p>
             {% endif %}
         </div>
     </div>
 
     {% if drive.status != 'pending' %}
-    <div class="col-12 col-md-4 d-flex justify-content-md-end">
-        <a href="{{ url_for('admin.editCompany', company_id=drive.company.id) }}">
-        <button type="button"class="btn btn-dark rounded-pill">Edit</button>
+    <div class="col-12 col-md-4 d-flex flex-wrap justify-content-md-end align-items-center gap-2">
+
+    <a href="{{ url_for('admin.editDrive', drive_id=drive.id) }}"
+       class="btn custom-btn rounded-pill px-4">
+        Edit
     </a>
-    <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#deleteModel">
-                            Delete
-                        </button>
-        <a href="{{ url_for('admin.driveApplications', drive_id=drive.id) }}">
-            <button type="button" class="btn btn-dark rounded-pill mb-3 w-100 w-md-auto">
-                View applications
-            </button>
-        </a>
-    </div>
+
+    <a href="{{ url_for('admin.driveApplications', drive_id=drive.id) }}"
+       class="btn btn-dark rounded-pill px-4">
+        View applications
+    </a>
+
+    <button type="button"
+            class="btn btn-danger rounded-pill px-4"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModel">
+        Delete
+    </button>
+
+</div>
     {% endif %}
 
 </div>
@@ -116,7 +133,7 @@
 </div>
 
 
-<form action="{{ url_for('admin.userDelete', uid=drive.company.uid) }}" method="post">
+<form action="{{ url_for('admin.driveDelete', drive_id=drive.id) }}" method="post">
     <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

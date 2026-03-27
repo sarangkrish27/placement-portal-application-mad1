@@ -3,6 +3,18 @@
     width: 120px;
 }
 
+.custom-btn{
+    background-color: #D35B1F;
+    color: white;
+    border: 1px solid transparent;
+}
+
+.custom-btn:hover{
+    background-color: #c35219;
+    color: white;
+    border: 1px solid #D35B1F;
+}
+
 span {
     font-weight: 600;
 }

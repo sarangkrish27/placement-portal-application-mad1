@@ -7,6 +7,7 @@ from app import bcrypt
 from datetime import datetime
 from utils import greet
 from werkzeug.utils import secure_filename
+from datetime import datetime, date
 import os
 import uuid
 
@@ -157,7 +158,41 @@ def editCompany(company_id):
         return redirect(url_for('admin.companyDetails', company_name=company.company_name))
     return render_template('/admin/company_edit_profile.html', form=form, company=company)
 
-@admin_bp.route('/admin/drives/<int:company_id>')
+@admin_bp.route('/<int:drive_id>/edit_drive', methods=['GET','POST'])
+@login_required
+@admin_required
+def editDrive(drive_id):
+    drive = PlacementDrive.query.filter_by(id=drive_id).first()
+    form = PlacementDriveForm(obj=drive)
+
+    if drive:
+        form.eligible_degrees.data = [d.strip() for d in drive.eligible_degrees.split(',')] if drive.eligible_degrees else []
+        form.preferred_departments.data = [d.strip() for d in drive.preferred_departments.split(',')] if drive.preferred_departments else []
+
+    if form.validate_on_submit():
+        drive.job_title = form.job_title.data
+        drive.location = form.location.data
+        drive.work_mode = form.work_mode.data
+        drive.job_type = form.job_type.data
+        drive.job_description = form.job_description.data
+        drive.key_responsibility = form.key_responsibility.data
+        drive.eligible_degrees = ", ".join(form.eligible_degrees.data)
+        drive.preferred_departments = ", ".join(form.preferred_departments.data)
+        drive.cgpa = form.cgpa.data
+        drive.other_eligibility = form.other_eligibility.data
+        drive.required_skills = form.required_skills.data
+        drive.preferred_skills = form.preferred_skills.data
+        drive.compensation_benefits = form.compensation_benefits.data
+        drive.application_deadline = form.application_deadline.data
+
+        db.session.commit()
+        flash('Drive updated successfully', 'success')
+        return redirect(url_for('admin.driveDetails', drive_id=drive.id))
+
+    return render_template('/admin/edit_drive.html', form=form, date=date)
+
+
+@admin_bp.route('/drives/<int:company_id>')
 @login_required
 @admin_required
 def companyDrives(company_id):
@@ -246,3 +281,12 @@ def userDelete(uid):
     flash("Student deleted successfully!", "success")
     return redirect(url_for('admin.students'))
 
+@admin_bp.route('/drive/delete/<int:drive_id>', methods=['POST'])
+@login_required
+@admin_required
+def driveDelete(drive_id):
+    drive = PlacementDrive.query.filter_by(id=drive_id).first()
+    db.session.delete(drive)
+    db.session.commit()
+    flash("Drive deleted successfully!", "success")
+    return redirect(url_for('admin.drives'))

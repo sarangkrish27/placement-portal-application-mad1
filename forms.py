@@ -187,12 +187,12 @@ class PlacementDriveForm(FlaskForm):
         validators=[DataRequired()],
         render_kw={'placeholder': 'Enter Job Title'}
     )
-    job_location = StringField(
+    location = StringField(
         'Location',
         validators=[DataRequired()],
         render_kw={'placeholder': 'Enter Location'}
     )
-    job_mode = SelectField(
+    work_mode = SelectField(
         'Work Mode',
         choices=WORK_MODE_CHOICES,
         validators=[DataRequired()]
