@@ -1,32 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}
-    {% if student and role == 'admin' %}
-        NIST ADMIN | {{ student.name }} Edit Profile
-    {% elif student %}
-        NIST | {{ student.name }} Edit Profile
-    {% else %}
-        NIST | Complete Profile
-    {% endif %}
-{% endblock %}
+{% block title %}NIST ADMIN | {{ student.name }} Edit{% endblock %}
 
-{% block css %}
+{% block css%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/complete-profile.css') }}">
 {% endblock %}
 
-{% block content %}
+{% block content%}
+
 
 <div class="container-sm">
-    {% set student_profile = user.student.profile_filename %}
-    {% include 'student_header.html' %}
-
-    {% if student %}
-        <h1 class="mt-5">Edit your profile</h1>
-    {% else %}
-        <h1 class="mt-5">Complete your profile</h1>
-    {% endif %}
-    
-    <div class="edit-sec">
+  {% include 'admin_header.html' %}
+    <div style="min-height: 100vh;" class="main-box mt-5">
+        <h1>Edit {{ student.name }}'s profile</h1>
+        <div class="edit-sec">
         <form class="form-box" enctype="multipart/form-data" method="POST">
             {{ form.hidden_tag() }}
 
@@ -113,11 +100,13 @@
                         {% endif %}
                     {% endwith %}
 
-                    {{ form.submit(class="rounded-pill mt-5 shadow") }}
+                    {{ form.submit(class="btn btn-dark rounded-pill mt-5 shadow") }}
                 </div>
             </div>
         </form>
     </div>
+    </div>
+</div>
 </div>
 
 <script>
@@ -132,19 +121,6 @@
             previewImage.src = imageLink;
         }
     }
-
-    document.getElementById('resume').addEventListener('change', function (e) {
-        const resumeText = document.getElementById('resume-text');
-        const file = e.target.files[0];
-
-        if (file) {
-            const fileName = file.name;
-            const fileSize = (file.size / 1024).toFixed(2);
-            resumeText.innerHTML = `📄 ${fileName} <small>(${fileSize} KB)</small>`;
-        } else {
-            resumeText.textContent = 'Add resume';
-        }
-    });
 </script>
 
 {% include 'footer.html' %}

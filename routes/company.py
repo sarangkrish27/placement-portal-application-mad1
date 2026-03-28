@@ -86,7 +86,7 @@ def dashboard():
 def drives():
     company = Company.query.filter_by(uid=current_user.id).first()
     drives = PlacementDrive.query.filter_by(company_id=company.id)
-    return render_template('/company/drives.html', company=company, drives=drives)
+    return render_template('/company/drives.html', company=company, drives=drives[::-1])
 
 @company_bp.route('/create-drives', methods = ['GET', 'POST'])
 @login_required
@@ -98,8 +98,8 @@ def createDrive():
         new_drive = PlacementDrive(
             company_id = company.id,
             job_title = form.job_title.data,
-            location = form.job_location.data,
-            work_mode = form.job_mode.data,
+            location = form.location.data,
+            work_mode = form.work_mode.data,
             job_type = form.job_type.data,
             job_description = form.job_description.data,
             key_responsibility = form.key_responsibility.data,

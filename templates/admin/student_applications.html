@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST ADMIN | Application{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+
+<div class="container-sm">
+    {% include 'admin_header.html' %}
+
+    <div style="height: 100vh;" class="section mt-5">
+        <div class="company-list mt-5">
+            {% if applications %}
+            <h2>{{ applications[0].student.name }}'s Applications</h2>
+            {% for application in applications %}
+            <div class="layout-row row mt-3">
+                <div class="col d-flex align-items-center">
+                    <div class="img-box">
+                        <img class="rounded-circle"
+                            src="{{ url_for('static', filename='uploads/profiles/' + application.drive.company.profile_filename) }}"
+                            alt="">
+                    </div>
+                    <div class="text ms-4">
+                        <div class="box d-flex gap-4 ">
+                            <h5>{{ application.drive.company.company_name }} | {{ application.drive.job_title }}</h5>
+                            {% if application.status == 'applied' %}
+                                {% set status = 'Applied' %}
+                                {% include 'low_label.html' %}
+                            {% elif application.status == 'shortlisted' %}
+                                {% set status = 'Shortlisted' %}
+                                {% include 'medium_label.html' %}
+                            {% elif application.status == 'selected' %}
+                                {% set status = 'Selected' %}
+                                {% include 'high_label.html' %}
+                            {% endif %}
+                        </div>        
+                        <p>{{ application.drive.location }} | {{ application.drive.job_type }} | {{ application.drive.work_mode }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('adminDriveDetails', drive_id=application.drive.id) }}">
+                        <button style="background-color: black; color: white;" class="shadow">
+                            View Details
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+            {% else %}
+            <div style="height: 80vh;" class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <img style="height: 250px;" src="{{ url_for('static', filename='images/no-data.svg') }}" alt="">
+            <p class="text-secondary">No application found</p>
+        </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -47,8 +47,6 @@
 }
 .form-box input[type="submit"] {
     height: 50px;
-    background-color: black;
-    color: white;
     font-weight: 500;
 }
 

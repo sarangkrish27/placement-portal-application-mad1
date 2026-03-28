@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from forms import CompanyProfileForm, PlacementDriveForm
+from forms import CompanyProfileForm, PlacementDriveForm, StudentProfileForm
 from auth_decorators import admin_required
 from models import db, User, Student, Company, PlacementDrive, Application
 from app import bcrypt
@@ -18,7 +18,10 @@ admin_bp = Blueprint('admin', __name__)
 @admin_required
 def dashboard():
     greeting = greet(datetime.now().hour)
-    return render_template('/admin/dashboard.html', greet=greeting)
+    companies = Company.query.filter_by(approval_status='approved').count()
+    drives = PlacementDrive.query.filter_by(status='approved').count()
+    students = Student.query.count()
+    return render_template('/admin/dashboard.html', greet=greeting, companies=companies, drives=drives, students=students)
 
 @admin_bp.route('/search', methods=['GET', 'POST'])
 @login_required
@@ -33,7 +36,24 @@ def search():
             results = Company.query.join(User).filter(Company.company_name.ilike(f"%{keyword}%")).all()
         
         elif search_filter == 'Students':
-            results = Student.query.with_entities(Student.id,Student.profile_filename,Student.name,Student.degree,Student.department).filter(Student.name.ilike(f"%{keyword}%")).all()
+            try:
+                student_id = int(keyword)
+                results = Student.query.with_entities(
+                    Student.id, Student.profile_filename, Student.name,
+                    Student.degree, Student.department
+                ).filter(Student.id == student_id).all()
+
+            except ValueError:
+                if keyword.endswith("@smail.nist.edu"):
+                    results = Student.query.with_entities(
+                        Student.id, Student.profile_filename, Student.name,
+                        Student.degree, Student.department
+                    ).join(Student.user).filter(User.email == keyword).all()
+                else:
+                    results = Student.query.with_entities(
+                        Student.id, Student.profile_filename, Student.name,
+                        Student.degree, Student.department
+                    ).filter(Student.name.ilike(f"%{keyword}%")).all()
 
         elif search_filter == 'Drives':
             results = PlacementDrive.query.join(Company).filter(PlacementDrive.job_title.ilike(f"%{keyword}%")).all()
@@ -74,11 +94,50 @@ def studentDetails(student_id):
     student = Student.query.filter_by(id=student_id).first()
     return render_template('admin/student_details.html', student=student)
 
+@admin_bp.route('/edit/student/<int:student_id>', methods=['GET','POST'])
+@login_required
+@admin_required
+def editStudent(student_id):
+    student = Student.query.filter_by(id=student_id).first()
+    form = StudentProfileForm(obj=student)
+
+    if form.validate_on_submit():
+        profile = form.profile.data
+        resume=form.resume.data
+        if profile and profile.filename:
+            original_name = secure_filename(profile.filename)
+            ext = os.path.splitext(original_name)[1]
+            profile_filename = f"{uuid.uuid4().hex}{ext}"
+            save_path = os.path.join("static/uploads", "profiles", profile_filename)
+            profile.save(save_path)
+            student.profile_filename = profile_filename
+
+        if resume and resume.filename:
+            resume = form.resume.data
+            original_name = secure_filename(resume.filename)
+            ext = os.path.splitext(original_name)[1]
+            resume_filename = f"{uuid.uuid4().hex}{ext}"
+            save_path = os.path.join("static/uploads", "resumes", resume_filename)
+            resume.save(save_path)
+            student.resume_filename = resume_filename
+
+        student.name=form.name.data
+        student.degree=form.degree.data
+        student.yos=form.yos.data
+        student.cgpa=form.cgpa.data
+
+        db.session.commit()
+        flash('Profile updated successfully', 'success')
+        return redirect(url_for('admin.studentDetails', student_id=student.id))
+
+    return render_template('/admin/student_edit_profile.html', form=form, student=student)
+
 @admin_bp.route('/<int:student_id>/applications')
 @login_required
 @admin_required
 def studentApplications(student_id):
-    return 'hai'
+    applications = Application.query.filter_by(student_id=student_id).all()
+    return render_template('admin/student_applications.html', applications=applications)
 
 @admin_bp.route('/companies')
 @login_required
@@ -131,7 +190,7 @@ def companyDetails(company_name):
     user = User.query.filter_by(id=company.uid).first()
     return render_template('admin/company_details.html', user=user, company=company)
 
-@admin_bp.route('/<int:company_id>/edit', methods=['GET', 'POST'])
+@admin_bp.route('/edit/company/<int:company_id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def editCompany(company_id):

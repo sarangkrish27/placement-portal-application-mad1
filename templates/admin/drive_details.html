@@ -116,12 +116,12 @@
         {% if drive.status == 'pending' %}
         <div class="btn-box d-flex justify-content-end gap-3">
             <form action="{{ url_for('admin.reject_drive', drive_id=drive.id) }}" method="POST">
-        <button type="submit" class="btn rounded-pill btn-danger">
+        <button style="padding: 8px 20px;" type="submit" class="btn rounded-pill btn-danger">
             Reject
         </button>
     </form>
             <form action="{{ url_for('admin.approve_drive', drive_id=drive.id) }}" method="POST">
-        <button type="submit" class="btn rounded-pill btn-success">
+        <button style="padding: 8px 20px;" type="submit" class="btn rounded-pill btn-success">
             Approve
         </button>
     </form>

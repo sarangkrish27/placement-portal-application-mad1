@@ -11,31 +11,31 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-center align-items-center gap-3 flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'adminDashboard' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
               href="{{ url_for('admin.dashboard') }}">
               Dashboard
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'adminSearch' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'admin.search' %}active{% endif %}"
               href="{{ url_for('admin.search') }}">
               Search
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'adminstudents' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'admin.students' %}active{% endif %}"
               href="{{ url_for('admin.students') }}">
               Students
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'admincompanies' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'admin.companies' %}active{% endif %}"
               href="{{ url_for('admin.companies') }}">
               Companies
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'admindrives' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'admin.drives' %}active{% endif %}"
               href="{{ url_for('admin.drives') }}">
               Drives
             </a>

@@ -13,6 +13,52 @@
   {% include 'admin_header.html' %}
     <div style="min-height: 100vh;" class="main-box mt-5">
       <h1 style="color: #D35B1F;">{{ greet }} Admin</h1>
+      <div class="row">
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    {% if companies %}
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number of</p>
+                        <h3 class="title-text mb-0">Companies</h3>
+                    </div>
+
+                    <h1 class="count-text mb-0 text-end">{{ companies }}</h1>
+                    {% else %}
+                <p class="label-text mb-1">No data</p>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    {% if drives %}
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number of</p>
+                        <h3 class="title-text mb-0">Placement Drives</h3>
+                    </div>
+
+                    <h1 class="count-text mb-0 text-end">{{ drives }}</h1>
+                    {% else %}
+                <p class="label-text mb-1">No data</p>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    {% if students %}
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number of</p>
+                        <h3 class="title-text mb-0">Students</h3>
+                    </div>
+
+                    <h1 class="count-text mb-0 text-end">{{ students }}</h1>
+                    {% else %}
+                <p class="label-text mb-1">No data</p>
+                {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

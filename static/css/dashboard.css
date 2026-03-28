@@ -1,3 +1,18 @@
+.box-card {
+    border: 1px solid black;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.box-card-2 {
+    border: 1px solid black;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
 .label-text {
     font-size: 20px;
     color: #0000009c;

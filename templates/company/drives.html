@@ -24,7 +24,7 @@
 {% endwith %}
         <div class="btn-row d-flex justify-content-end">
             <a href="{{ url_for('company.createDrive') }}">
-                <button class="drive-btn rounded-pill shadow">
+                <button class="custom-btn rounded-pill shadow">
             Create new drive
         </button>
             </a>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
                     <a href="{{ url_for('company.driveDetails', drive_id=drive.id) }}">
-                        <button class="shadow">
+                        <button class="btn btn-dark shadow">
                         View Detail
                     </button>
                     </a>
