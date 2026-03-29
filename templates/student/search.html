@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ user.student.name }} | Search{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% set user = user %}
+    {% include 'student_header.html' %}
+    
+    <div style="min-height: 100vh;" class="section mt-5">
+        <div class="search-box mt-5">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, msg in messages %}
+            <div class="alert alert-{{ category }} mt-5" role="alert">
+                {{ msg }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <form action="" method="post">
+                <div class="search-row row mt-5">
+                    <div class="col-12 col-md-2">
+                        <select name="search-by" class="form-select rounded-pill" required>
+                            <option>Search By</option>
+                            <option value="Companies">Companies</option>
+                            <option value="Drives">Drives</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-8">
+                        <input class="w-100 rounded-pill ps-3" type="text" name="search-input"
+                            placeholder="Type keyword">
+                    </div>
+
+                    <div class="col-12 col-md-2 d-grid">
+                        <input class="rounded-pill" type="submit" value="Search">
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+       {% if results %}
+    {% for result in results %}
+
+        {% if search_filter == 'Companies' %}
+            <div class="layout-row row mt-4 mx-1 align-items-center">
+            <div class="col-12 col-md-8 d-flex align-items-center">
+                <div class="img-box flex-shrink-0">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + result.profile_filename) }}" alt="">
+                </div>
+                <div class="text ms-3">
+                    <h5>{{ result.company_name }}</h5>
+                    <p>{{ result.industry }}</p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end align-items-center">
+                <a href="{{ url_for('student.companyDetails', company_id=result.id) }}">
+                    <button style="background-color: black; color: white;" class="shadow">
+                        View Details
+                    </button>
+                </a>
+            </div>
+        </div>
+        {% elif search_filter == 'Drives' %}
+            <div class="layout-row row mt-4 mx-1 align-items-center">
+            <div class="col-12 col-md-8 d-flex align-items-center">
+                <div class="img-box flex-shrink-0">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + result.company.profile_filename) }}" alt="">
+                </div>
+                <div class="text ms-4">
+                    <div class="box d-flex flex-column align-items-start mb-2">
+                        <h6 class="m-0" style="font-size: 25px;">{{ result.company.company_name }} | {{ result.job_title }}</h6>
+                    </div>
+                    <p class="mb-0">{{ result.location }} | {{ result.work_mode }} | {{ result.job_type }}</p>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end align-items-center">
+                <a href="{{ url_for('student.driveDetails', drive_id=result.id) }}">
+                    <button style="background-color: black; color: white;" class="shadow">
+                        View Details
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        {% endif %}
+
+    {% endfor %}
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center" style="height: 80vh;">
+            <p class="text-secondary">{{ not_found }}</p>
+        </div>
+    
+
+{% endif %}
+
+    </div>
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

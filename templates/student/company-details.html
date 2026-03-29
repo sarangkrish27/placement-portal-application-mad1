@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ user.student.name }} | {{ company.company_name }} Details{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/companies_details.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<div class="container-sm">
+    {% set user = user %}
+    {% include 'student_header.html' %}
+    <div class="main-box mt-5">
+        <div class="detail-box d-flex justify-content-between">
+            <div class="d-flex">
+                <div class="img-box">
+                <img class="rounded-circle"
+                    src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
+            </div>
+            <div class="text-box ps-4">
+                <h5 style="color: #D35B1F;" class="fs-1 fw-semibold">{{ company.company_name }}</h5>
+                <p class="mb-0">{{ company.industry }}</p>
+                <p class="mb-0">HR Name: {{ company.hr_name }}</p>
+                <p class="mb-0">Website: <a href="{{ company.website }}">{{ company.website }}</a></p>
+            </div>
+            </div>
+            <div class="">
+                <a href="{{ url_for('student.companySpecificDrives', company_id=company.id) }}">
+                    <div class="btn btn-dark rounded-pill">
+                        View {{ company.company_name }}'s Drives
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="desc-box mt-3">
+            <p>{{ company.description }}</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

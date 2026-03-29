@@ -60,7 +60,7 @@ def complete_profile():
         return redirect(url_for('company.dashboard'))
     return render_template('company/complete-profile.html', form=form)
 
-@company_bp.route('/company/approvel')
+@company_bp.route('/approvel')
 @login_required
 @company_required
 def approval_pending():

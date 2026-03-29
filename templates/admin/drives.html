@@ -28,27 +28,27 @@
         <div class="approval-pending-box">
             <h2>Approval pending</h2>
             {% for drive in pending_request %}
-            <div class="layout-row row mt-3">
-                <div class="col d-flex align-items-center">
-                    <div class="img-box">
-                        <img class="rounded-circle"
-                            src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}"
-                            alt="">
-                    </div>
-                    <div class="text ms-4">
-                        <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
-                        <p>{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
-                    </div>
+            <div class="layout-row row mt-4 mx-1 align-items-center">
+            <div class="col-12 col-md-8 d-flex align-items-center">
+                <div class="img-box flex-shrink-0">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}" alt="">
                 </div>
-                <div class="col d-flex justify-content-end align-items-center">
-                    <a href="{{ url_for('admin.driveDetails', drive_id=drive.id) }}">
-                        <button class="btn primary-btn btn-dark rounded-pill shadow">
-                            Know More
-                        </button>
-                    </a>
+                <div class="text ms-4">
+                    <div class="box d-flex flex-column align-items-start mb-2">
+                        <h6 class="m-0" style="font-size: 25px;">{{ drive.company.company_name }} | {{ drive.job_title }}</h6>
+                    </div>
+                    <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
                 </div>
-
             </div>
+            <div class="col d-flex justify-content-end align-items-center">
+                <a href="{{ url_for('admin.driveDetails', drive_id=drive.id) }}">
+                    <button style="background-color: black; color: white;" class="shadow primary-btn">
+                        View Details
+                    </button>
+                </a>
+            </div>
+        </div>
             {% endfor %}
         </div>
         {% endif %}

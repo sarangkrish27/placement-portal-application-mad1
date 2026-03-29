@@ -10,10 +10,15 @@ input[type="submit"] {
     width: 150px;
     height: 48px;
     padding: 8px 20px;
-    background-color: black;
-    border: none;
+    background-color: #D35B1F;
     color: white;
-    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+input[type="submit"]:hover{
+    background-color: #c35219;
+    color: white;
+    border: 1px solid #D35B1F;
 }
 
 select.form-select,

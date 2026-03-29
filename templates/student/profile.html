@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | {{ user.student.name }}{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% set user = user %}
+    {% include 'student_header.html' %}
+    <div style="min-height: 100vh;" class="main-box mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+  {{ msg }}
+</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end">
+                <a href="{{ url_for('student.editProfile') }}"><button type="button" class="btn btn-dark rounded-pill">
+                    Edit profile</button></a>
+            </div>
+        </div>
+        <div class="row main-box">
+            <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-4" justify-content-center
+                align-items-center">
+                <div class="img-box">
+                    <img class="preview-image"
+                        src="{{ url_for('static', filename='uploads/profiles/' + user.student.profile_filename) }}"
+                        alt="profile picture">
+                </div>
+                <div class="name">
+                    <h2 class="fw-semibold text-center">{{ user.student.name }}</h2>
+                    <h6 class="text-secondary text-center">{{ user.email }}</h6>
+                </div>
+
+                <div class="resume-box">
+                    <a href="{{ url_for('static', filename='uploads/resumes/' + user.student.resume_filename) }}" target="_blank" rel="noopener noreferrer">
+                        <button type="button" class="btn btn-secondary rounded-pill">View Resume</button>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="info-box col-6 d-flex flex-column justify-content-center">
+                <p><span class="fw-medium">Degree:</span> {{ user.student.degree }}</p>
+                <p><span class="fw-medium">Department:</span> {{ user.student.department }}</p>
+                <p><span class="fw-medium">Year of Study:</span> {{ user.student.yos }}</p>
+                <p><span class="fw-medium">CGPA:</span> {{ user.student.cgpa }}/10</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

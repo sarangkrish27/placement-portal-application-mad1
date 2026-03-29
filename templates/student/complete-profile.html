@@ -17,10 +17,9 @@
 {% block content %}
 
 <div class="container-sm">
-    {% set student_profile = user.student.profile_filename %}
-    {% include 'student_header.html' %}
-
     {% if student %}
+        {% set user = user %}
+    {% include 'student_header.html' %}
         <h1 class="mt-5">Edit your profile</h1>
     {% else %}
         <h1 class="mt-5">Complete your profile</h1>
@@ -113,7 +112,7 @@
                         {% endif %}
                     {% endwith %}
 
-                    {{ form.submit(class="rounded-pill mt-5 shadow") }}
+                    {{ form.submit(class="btn btn-dark rounded-pill mt-5 shadow") }}
                 </div>
             </div>
         </form>

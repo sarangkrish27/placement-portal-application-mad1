@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | {{ user.student.name }}{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/drive_details.css') }}">
+{% endblock %}
+
+{% block content%}
+
+<style>
+    .text-box p {
+        margin-bottom: 0;
+    }
+</style>
+
+
+<div class="container-sm">
+    {% set student_profile = user.student.profile_filename %}
+    {% include 'student_header.html' %}
+
+    <div class="main-box mt-5">
+        
+        <div class="job-details row align-items-start">
+    
+    <div class="col-12 col-md-8 d-flex align-items-center gap-3 mb-3 mb-md-0">
+        <div class="img-box">
+            <img class="rounded-circle"
+                src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}" alt="">
+        </div>
+
+        <div class="text-box">
+            <a style="font-size: 32px; color: #D35B1F;" href="{{ url_for('student.companyDetails', company_id=drive.company.id) }}"" class="d-flex align-items-center gap-2 text-decoration-none">
+                <h3>{{ drive.company.company_name }}</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
+  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
+</svg>
+            </a>
+            <p><span>Job Title: </span>{{ drive.job_title }}</p>
+            <p><span>Location:</span> {{ drive.location }}</p>
+            <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
+            <p><span>Job Type:</span> {{ drive.job_type }}</p>
+            <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
+            {% if drive.status == 'closed' %}
+                <p class="text-danger fw-bold">Application CLOSED</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if drive.status != 'pending' %}
+    <div class="col-12 col-md-4 d-flex justify-content-md-end">
+       {% if existing %}
+                    <div class="edit-box">
+                        {% if existing.status == 'applied' %}
+                        {% set status = 'Applied' %}
+                        {% include 'low_label.html' %}
+                        {% elif existing.status == 'shortlisted' %}
+                        {% set status = 'Shortlisted' %}
+                        {% include 'medium_label.html' %}
+                        {% elif existing.status == 'selected' %}
+                        {% set status = 'Selected' %}
+                        {% include 'high_label.html' %}
+                        {% endif %}
+                    </div>
+                    {% else %}
+
+                    {% if drive.status != 'closed' and not user.is_blacklisted %}
+                    <div class="edit-box">
+                        <form action="{{ url_for('student.applyDrive', drive_id=drive.id) }}" method="POST">
+                            <button style="padding: 8px 20px;" type="submit" class="btn custom-btn rounded-pill shadow">
+                                Apply
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+        <hr class="mb-4">
+        <div class="job-desc">
+            <h4>Job Description</h4>
+            <p class="mb-4">{{ drive.job_description }}</p>
+        </div>
+        <div class="job-responsibility">
+            <h4>Key Responsibilities</h4>
+            <p class="mb-4">{{ drive.key_responsibility }}</p>
+        </div>
+        <div class="job-eligibility">
+            <h4>Eligibility Criteria</h4>
+            <p>{{ drive.eligible_degrees }} degree in {{ drive.preferred_departments }}</p>
+            <p>Minimum CGPA of {{ drive.cgpa }}/10</p>
+            <p class="mb-4">{{ drive.other_eligibility }}</p>
+        </div>
+        <div class="req-skills">
+            <h4>Required Technical Skills</h4>
+            <p class="mb-4">{{ drive.required_skills }}</p>
+        </div>
+        <div class="pref-skills">
+            <h4>Preferred Skills</h4>
+            <p class="mb-4">{{ drive.preferred_skills }}</p>
+        </div>
+        <div class="compensation_benefits">
+            <h4>Compensation & Benefits</h4>
+            <p class="mb-4">{{ drive.compensation_benefits }}</p>
+        </div>
+    </div>
+    {% if drive.status == 'pending' %}
+    <div class="btn-box d-flex justify-content-end gap-3">
+        <form action="{{ url_for('reject_drive', drive_id=drive.id) }}" method="POST">
+            <button type="submit" class="btn rounded-pill btn-danger">
+                Reject
+            </button>
+        </form>
+        <form action="{{ url_for('approve_drive', drive_id=drive.id) }}" method="POST">
+            <button type="submit" class="btn rounded-pill btn-success">
+                Approve
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

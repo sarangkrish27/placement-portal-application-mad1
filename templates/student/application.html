@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}NIST {{ user.student.name }} | Dashboard{% endblock %}
+{% block title %}NIST {{ user.student.name }} | Applications{% endblock %}
 
 {% block css%}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
 {% endblock %}
 
@@ -11,43 +10,22 @@
 
 
 <div class="container-sm">
-    {% set user = user %}
+    {% set student_profile = user.student.profile_filename %}
     {% include 'student_header.html' %}
     <div style="min-height: 80vh;" class="main-box mt-5">
-      <h1 style="color: #D35B1F;">{{ greet }} {{ user.student.name }}</h1>
-      <div class="row">
-            <div class="col-md-6 mt-3">
-                <div style="height: 100%;" class="box-card p-4">
-                    <div class="text-left">
-                        <p class="label-text mb-1">Number of</p>
-                        <h3 class="title-text mb-0">Drives applied</h3>
-                    </div>
-                    {% if applications %}
-                    <h1 class="count-text mb-0 text-end">{{ applications | length }}</h1>
-                    {% else %}
-                <p class="label-text mb-1">No data</p>
-                {% endif %}
-                </div>
-            </div>
-
-            <div class="col-md-6 mt-3">
-                <div class="box-card p-4">
-                    <div class="text-left">
-                        <p class="label-text mb-1">Application</p>
-                        <h3 class="title-text mb-0">Status</h3>
-                    </div>
-                    <ul class="d-flex justify-content-around mt-3">
-                      <li>Applied: <span style="color: #D35B1F;" class="fw-bold">{{ applied }}</span></li>
-                    <li>Shortlisted: <span style="color: #D35B1F;" class="fw-bold">{{ shortlisted }}</span></li>
-                    <li>Selected: <span style="color: #D35B1F;" class="fw-bold">{{ selected }}</span></li>
-                    </ul>
-                </div>
-            </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
         </div>
-        <div class="row">
-          <h2 class="mt-5">Your Applications</h2>
-          {% if applications %}
-            {% for drive in applications[:-1] %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="company-list mt-5">
+            <h2>Your Applications</h2>
+            {% if applied_drives %}
+            {% for drive in applied_drives %}
             <div class="layout-row row mt-4 mx-1 align-items-center">
             <div class="col-12 col-md-8 d-flex align-items-center">
                 <div class="img-box flex-shrink-0">
@@ -82,17 +60,14 @@
             </div>
         </div>
             {% endfor %}
-            <div class="row text-right">
-            <a href="{{ url_for('student.applications') }}" class="mt-2 d-flex justify-content-end" style="color: #D35B1F;">Show more</a>
-          </div>
-          {% else %}
-           <div class="row mt-4 mx-1 align-items-center">
-            <p class="text-secondary">You have not applied for any placement drives</p>
-           </div>
-          {% endif %}
+            {% else %}
+            <div style="height: 80vh;" class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <p class="text-secondary">No drives found</p>
+        </div>
+            {% endif %}
         </div>
     </div>
-</div>
+
 
 </div>
 

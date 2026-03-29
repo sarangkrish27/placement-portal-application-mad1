@@ -8,23 +8,25 @@
       </div>
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-center align-items-center gap-3 flex-grow-1 pe-3">
-          <li class="nav-item">
-            <a href="">Dashboard</a>
+          <a class="nav-link {% if request.endpoint == 'student.dashboard' %}active{% endif %}"
+              href="{{ url_for('student.dashboard') }}">
+            Dashboard
+          </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'studentDrives' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'student.search' %}active{% endif %}"
               href="{{ url_for('student.search') }}">
               Search
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'studentDrives' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'student.drives' %}active{% endif %}"
               href="{{ url_for('student.drives') }}">
               Drives
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.endpoint == 'studentApplications' %}active{% endif %}"
+            <a class="nav-link {% if request.endpoint == 'student.applications' %}active{% endif %}"
               href="{{ url_for('student.applications') }}">
               Applications
             </a>
@@ -64,7 +66,10 @@
 </nav>
 
 {% if user.is_blacklisted %}
-<div class="alert alert-warning mt-3" role="alert">
-  Your account has been <span class="fw-semibold">blacklisted</span> and is now restricted to <span class="fw-semibold">read-only</span> access. <strong>Reason:</strong> {{ user.blacklist_reason }}.
+<div class="container mt-5">
+  <div class="alert alert-danger alert-dismissible" role="alert">
+    Your account has been <span class="fw-semibold">blacklisted</span> and is now restricted to 
+    <span class="fw-semibold">read-only</span> access. <strong>Reason:</strong> {{ user.blacklist_reason }}.
+  </div>
 </div>
 {% endif %}

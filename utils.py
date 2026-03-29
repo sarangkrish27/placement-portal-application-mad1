@@ -1,6 +1,6 @@
 DEPARTMENT_MAP = {
     "ai": "Artificial Intelligence",
-    "bio": "Bioinformatics",
+    "bi": "Bioinformatics",
     "ce": "Computer Engineering",
     "cs": "Computer Science",
     "cy": "Cybersecurity",

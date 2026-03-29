@@ -160,7 +160,7 @@ def companies():
 @admin_required
 def drives():
     pending_request = PlacementDrive.query.filter_by(status='pending').all()
-    all_drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.id.desc()).all()
+    all_drives = PlacementDrive.query.filter(PlacementDrive.status!='pending').order_by(PlacementDrive.id.desc()).all()
     return render_template('/admin/drives.html', pending_request=pending_request, all_drives=all_drives)
 
 @admin_bp.route('/<int:drive_id>/details')
@@ -334,7 +334,7 @@ def userRevokeBlacklist(uid):
 @login_required
 @admin_required
 def userDelete(uid):
-    user = User.query.filter_by(uid=uid).first()
+    user = User.query.filter_by(id=uid).first()
     db.session.delete(user)
     db.session.commit()
     flash("Student deleted successfully!", "success")

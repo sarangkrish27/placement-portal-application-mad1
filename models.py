@@ -82,7 +82,7 @@ class PlacementDrive(db.Model):
 
     company = db.relationship(
         'Company',
-        backref=db.backref('placement_drives', lazy=True)
+        backref=db.backref('placement_drives', lazy=True, cascade='all, delete-orphan')
     )
 
 class Application(db.Model):
@@ -122,7 +122,7 @@ class Application(db.Model):
 
     drive = db.relationship(
         'PlacementDrive',
-        backref=db.backref('applications', lazy=True)
+        backref=db.backref('applications', lazy=True, cascade='all, delete-orphan')
     )
 
 

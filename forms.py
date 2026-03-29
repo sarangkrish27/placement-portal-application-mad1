@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField, StringField, SelectField, IntegerField, DecimalField, FileField, URLField, TextAreaField, SelectMultipleField, DateField
 from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, NumberRange, URL
 from wtforms.widgets import CheckboxInput, ListWidget
-from flask_wtf.file import FileAllowed, FileSize
+from flask_wtf.file import FileAllowed, FileRequired
 
 class LoginForm(FlaskForm):
     email = EmailField(validators=[
