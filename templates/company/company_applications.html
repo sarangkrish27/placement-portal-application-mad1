@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | Placement Drives{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm" style="min-height: 100vh;">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div class="main-box mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, msg in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+  {{ msg }}
+</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+        {% if not drives %}
+        <div class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+            <img style="height: 250px;" src="{{ url_for('static', filename='images/no-data.svg') }}" alt="">
+            <p class="text-secondary">You have not created any placement drives yet.</p>
+        </div>
+        {% else %}
+        <div style="height: 80vh;">
+            {% for drive in drives %}
+                <div class="layout-row row mt-3 mx-1">
+                <div class="col d-flex align-items-center">
+                    <div class="text ms-4 mt-2">
+                            <div class="d-flex gap-2 mt-2 align-items-baseline">
+                            <h5>{{ drive.job_title }}</h5>
+                            {% if drive.status == 'closed' %}
+                                {% set status = 'Closed' %}
+                                {% include 'closed_label.html' %}
+                            {% endif %}
+                        </div>
+                        <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('Company.applicants', drive_id=drive.id) }}">
+                        <button class="btn btn-dark rounded-pill shadow">
+                            View Applicants
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

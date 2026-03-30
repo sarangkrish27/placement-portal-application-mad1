@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST | {{ company.company_name }}{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div style="min-height: 100vh;" class="main-box mt-5">
+        <div class="row">
+            <div class="col-6 d-flex flex-column align-items-center justify-content-center gap-2" justify-content-center
+                align-items-center">
+                <div class="img-box">
+                    <img class="preview-image"
+                        src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                        alt="profile picture">
+                </div>
+                <div class="name">
+                    <h2 class="fw-semibold text-center">{{ company.company_name }}</h2>
+                </div>
+
+            </div>
+
+            <div class="info-box col-6 d-flex flex-column justify-content-center">
+                <p><span class="fw-medium">Industry:</span> {{ company.industry }}</p>
+                <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
+                <p><span class="fw-medium">HR Mail:</span> {{ company.user.email }}</p>
+                <p><span class="fw-medium">Website:</span> {{ company.website }}</p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col">
+                <h3>About the Company</h3>
+                <p class="fs-5 mt-2">{{ company.description }}</p>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+            <div class="col-3 d-flex justify-content-end">
+                <a href="{{ url_for('company.editProfile') }}">
+                    <button type="button" class="custom-btn rounded-pill shadow">Edit Profile</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

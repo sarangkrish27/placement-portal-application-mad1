@@ -11,21 +11,6 @@
     height: 80vh;
 }
 
-.edit-btn {
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: #FFAE71;
-    border: 2px solid #D35B1F;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    cursor: pointer;
-}
 
 .name h2 {
     color: #D35B1F;
@@ -50,13 +35,13 @@
 .custom-btn{
     background-color: #D35B1F;
     color: white;
-    border: 1px solid transparent;   /* added */
+    border: 1px solid transparent;
     padding: 8px 20px;
 }
 
 .custom-btn:hover{
-    background-color: white;
-    color: #D35B1F;
+    background-color: #c35219;
+    color: white;
     border: 1px solid #D35B1F;
 }
 

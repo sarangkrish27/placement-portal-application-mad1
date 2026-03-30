@@ -125,3 +125,28 @@ def driveDetails(drive_id):
     company = Company.query.filter_by(uid=current_user.id).first()
     drive = PlacementDrive.query.filter_by(id=drive_id).first()
     return render_template('/company/drive_details.html', company=company, drive=drive)
+
+@company_bp.route('/applications')
+@login_required
+@company_required
+def applications():
+    return 'company application'
+
+@company_bp.route('/applicants/<int:drive_id>')
+@login_required
+@company_required
+def applicants(drive_id):
+    return "applicants"
+
+@company_bp.route('/profile')
+@login_required
+@company_required
+def profile():
+    company = Company.query.filter_by(uid=current_user.id).first()
+    return render_template('/company/profile.html', company=company)
+
+@company_bp.route('/profile/edit')
+@login_required
+@company_required
+def editProfile():
+    return 'edit'
