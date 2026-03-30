@@ -22,19 +22,32 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-        <div class="btn-row d-flex justify-content-end">
+        <div class="btn-row d-flex justify-content-between">
+            <div class="">
+                <h2>All Drives</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <form method="get" action="{{ url_for('company.drives') }}" id="filterForm"
+                        class="d-flex gap-3">
+                        <select name="filter-by-status" class="form-select mb-4 rounded-pill"
+                            onchange="this.form.submit()">
+                            <option value="">Filter by Status</option>
+                            <option value="pending" {% if request.args.get('filter-by-status')=='pending' %}selected{%
+                                endif %}>Pending</option>
+                            <option value="approved" {% if request.args.get('filter-by-status')=='approved'
+                                %}selected{% endif %}>Approved</option>
+                            <option value="closed" {% if request.args.get('filter-by-status')=='closed' %}selected{%
+                                endif %}>Closed</option>
+                        </select>
+                    </form>
             <a href="{{ url_for('company.createDrive') }}">
                 <button class="custom-btn rounded-pill shadow">
             Create new drive
         </button>
             </a>
+            </div>
         </div>
-        {% if not drives %}
-        <div class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
-            <img style="height: 250px;" src="{{ url_for('static', filename='images/no-data.svg') }}" alt="">
-            <p class="text-secondary">You have not created any placement drives yet.</p>
-        </div>
-        {% else %}
+        {% if drives %}
         <div style="height: 80vh;">
             {% for drive in drives %}
                 <div class="drive-row row mt-3">
@@ -48,8 +61,11 @@
                             {% elif drive.status == 'approved' %}
                                 {% set status = 'Approved' %}
                                 {% include 'high_label.html' %}
+                            {% elif drive.status == 'closed' %}
+                                {% set status = 'Closed' %}
+                                {% include 'rejected_label.html' %}
                             {% else %}
-                                {% set status = 'Rejected' %}
+                                {% set status = 'Closed' %}
                                 {% include 'rejected_label.html' %}
                             {% endif %}
                         </div>
@@ -58,7 +74,7 @@
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
                     <a href="{{ url_for('company.driveDetails', drive_id=drive.id) }}">
-                        <button class="btn btn-dark shadow">
+                        <button class="btn primary-btn btn-dark shadow">
                         View Detail
                     </button>
                     </a>
@@ -67,6 +83,11 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+            <div style="height: 80vh;"
+                    class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+                    <p class="text-secondary">No drive found</p>
+                </div>
         {% endif %}
 
     </div>

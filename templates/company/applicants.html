@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ company.company_name }} | Applicants{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div style="min-height: 100vh;" class="section mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="company-list mt-5">
+            <div class="row d-flex">
+                <div class="col-10">
+                    <h2>All Students</h2>
+                </div>
+                <div class="col-md-2">
+                    <form method="get" action="{{ url_for('company.applicants', drive_id=drive_id) }}" id="filterForm"
+                        class="d-flex gap-3">
+                        <select name="filter-by-status" class="form-select mb-4 rounded-pill"
+                            onchange="this.form.submit()">
+                            <option value="">Filter by Status</option>
+                            <option value="applied" {% if request.args.get('filter-by-status')=='applied' %}selected{%
+                                endif %}>Applied</option>
+                            <option value="shortlisted" {% if request.args.get('filter-by-status')=='shortlisted'
+                                %}selected{% endif %}>Shortlisted</option>
+                            <option value="selected" {% if request.args.get('filter-by-status')=='selected' %}selected{%
+                                endif %}>Selected</option>
+                            <option value="rejected" {% if request.args.get('filter-by-status')=='rejected' %}selected{%
+                                endif %}>Rejected</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            {% if applications %}
+            {% for application in applications %}
+            <div class="layout-row row mt-3 mx-1">
+                <div class="col d-flex align-items-center">
+                    <div class="img-box">
+                        <img class="rounded-circle"
+                            src="{{ url_for('static', filename='uploads/profiles/' + application.student.profile_filename) }}"
+                            alt="">
+                    </div>
+                    <div class="text ms-4">
+                        <div class="box d-flex align-items-center gap-4 mb-2">
+                            <h5>{{ application.student.name }}</h5>
+                            {% if application.student.user.is_blacklisted %}
+                                {% set status = 'Blacklisted' %}
+                                {% include 'rejected_label.html' %}
+                            {% else %}
+                                {% if application.status == 'applied' %}
+                                {% set status = 'Applied' %}
+                                {% include 'low_label.html' %}
+                                {% elif application.status == 'shortlisted' %}
+                                {% set status = 'Shortlist' %}
+                                {% include 'medium_label.html' %}
+                                {% elif application.status == 'selected' %}
+                                {% set status = 'Selected' %}
+                                {% include 'high_label.html' %}
+                                {% else %}
+                                {% set status = 'Rejected' %}
+                                {% include 'rejected_label.html' %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <p>{{ application.student.degree }} | {{ application.student.department }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a
+                        href="{{ url_for('company.studentDetails', application_id=application.id, student_id=application.student.id) }}">
+                        <button class="btn btn-dark primary-btn rounded-pill shadow">
+                            View Details
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+            {% else %}
+            <div style="height: 80vh;"
+                class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+                <p class="text-secondary">No students found</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -49,10 +49,10 @@ def complete_profile():
 
         if not profile or not profile.filename:
             flash('Please upload a profile picture.', 'danger')
-            return render_template('student/complete-profile.html', form=form)  
+            return redirect(url_for('student.complete_profile', form=form))
         if not resume or not resume.filename:
             flash('Please upload a resume.', 'danger')
-            return render_template('student/complete-profile.html', form=form)
+            return redirect(url_for('student.complete_profile', form=form))
 
         original_name = secure_filename(profile.filename)
         ext = os.path.splitext(original_name)[1]

@@ -18,7 +18,7 @@
 <div class="container-sm">
     {% include 'admin_header.html' %}
     
-    <div class="main-box mt-5">
+    <div style="min-height: 80vh;" class="main-box mt-5">
         <div class="job-details row align-items-start">
             {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -48,9 +48,10 @@
             <p><span>Location:</span> {{ drive.location }}</p>
             <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
             <p><span>Job Type:</span> {{ drive.job_type }}</p>
-            <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
             {% if drive.status == 'closed' %}
                 <p class="text-danger fw-bold">Application CLOSED</p>
+            {% else %}
+            <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
             {% endif %}
             {% if drive.company.user.is_blacklisted %}
                 <p class="text-danger fw-bold">

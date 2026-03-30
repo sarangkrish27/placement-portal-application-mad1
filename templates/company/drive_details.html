@@ -20,31 +20,56 @@
     {% include 'company_header.html' %}
 
     <div class="main-box mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <div class="job-details d-flex justify-content-between">
             <div class="d-flex align-items-center gap-4">
                 <div class="img-box">
-                <img class="rounded-circle"
-                    src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
+                    <img class="rounded-circle"
+                        src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
+                </div>
+                <div class="text-box">
+                    <h3 style="font-size: 32px; color: #D35B1F;">{{ company.company_name }}</h3>
+                    <p><span>Job Title: </span>{{ drive.job_title }}</p>
+                    <p><span>Location:</span> {{ drive.location }}</p>
+                    <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
+                    <p><span>Job Type:</span> {{ drive.job_type }}</p>
+                    {% if drive.status == 'closed' %}
+                    <p class="text-danger fw-bold">Application CLOSED</p>
+                    {% else %}
+                    <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="text-box">
-                <h3 style="font-size: 32px;">{{ company.company_name }}</h3>
-                <p><span>Job Title: </span>{{ drive.job_title }}</p>
-                <p><span>Location:</span> {{ drive.location }}</p>
-                <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
-                <p><span>Job Type:</span> {{ drive.job_type }}</p>
-                <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
-            </div>
-            </div>
-            {% if drive.status != 'approved' %}
             <div class="edit-box">
-                <a href="#">
-                    <button style="padding: 8px 20px;" type="submit"
-                        class="btn custom-btn rounded-pill">
-                        Edit
-                    </button>
-                </a>
-            </div>
-            {% endif %}
+    {% if drive.status == 'pending' %}
+        <a href="{{ url_for('company.editDrive', drive_id=drive.id) }}">
+            <button style="padding: 8px 20px;" type="submit" class="btn custom-btn rounded-pill">
+                Edit
+            </button>
+        </a>
+    {% elif drive.status == 'approved' %}
+        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}" class="btn btn-dark rounded-pill px-4">
+            View Applications
+        </a>
+        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+            data-bs-target="#closeDriveModel">
+            Close Drive
+        </button>
+    {% elif drive.status == 'closed' %}
+        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}" class="btn btn-dark rounded-pill px-4">
+            View Applications
+        </a>
+    {% endif %}
+</div>
+
         </div>
         <hr class="mb-4">
         <div class="job-desc">
@@ -75,6 +100,26 @@
         </div>
     </div>
 </div>
+
+<form action="{{ url_for('company.closeDrive', drive_id=drive.id) }}" method="post">
+    <div class="modal fade" id="closeDriveModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Closing is permanent and cannot be reversed.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Close Drive">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 {% include 'footer.html' %}
 {% endblock %}

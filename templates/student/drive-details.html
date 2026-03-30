@@ -41,9 +41,10 @@
             <p><span>Location:</span> {{ drive.location }}</p>
             <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
             <p><span>Job Type:</span> {{ drive.job_type }}</p>
-            <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
             {% if drive.status == 'closed' %}
                 <p class="text-danger fw-bold">Application CLOSED</p>
+            {% else %}
+                <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
             {% endif %}
         </div>
     </div>

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ company.company_name }} | {{ student.name }} Detalis{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+
+<div class="container-sm">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+
+     <div style="min-height: 80vh;" class="row main-box mt-5">
+            <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-4" justify-content-center
+                align-items-center">
+                <div class="img-box">
+                    <img class="preview-image"
+                        src="{{ url_for('static', filename='uploads/profiles/' + student.profile_filename) }}"
+                        alt="profile picture">
+                </div>
+                <div class="name">
+                    <h2 class="fw-semibold text-center">{{ student.name }}</h2>
+                    <h6 class="text-secondary text-center">{{ student.user.email }}</h6>
+                </div>
+
+                <div class="resume-box">
+                    <a href="{{ url_for('static', filename='uploads/resumes/' + student.resume_filename) }}"
+                        target="_blank" rel="noopener noreferrer">
+                        <button type="button" class="btn btn-dark rounded-pill">View Resume</button>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="info-box col-6 d-flex flex-column justify-content-center">
+                <p><span class="fw-medium">Degree:</span> {{ student.degree }}</p>
+                <p><span class="fw-medium">Department:</span> {{ student.department }}</p>
+                <p><span class="fw-medium">Year of Study:</span> {{ student.yos }}</p>
+                <p><span class="fw-medium">CGPA:</span> {{ student.cgpa }}/10</p>
+                {% if student.user.is_blacklisted %}
+                    <p class="text-danger"><span class="fw-medium">Status:</span> Blacklisted</p>
+                    <p class="text-danger"><span class="fw-medium">Reason:</span> {{ student.user.blacklist_reason }}</p>
+                {% else %}
+                <form action="{{ url_for('company.reviewDecision', student_id=student.id, drive_id=drive_id) }}" method="post">
+                    <div class="row">
+                        <div class="col-6">
+                            <select class="form-select mb-4 rounded-pill shadow" name="review-decision" id="review-decision" required>
+                                <option value="">Review Decision</option>
+                                <option value="shortlisted" {% if application and 'shortlisted' in application.status %}selected{% endif %}>Shortlist</option>
+                                <option value="selected" {% if application and 'selected' in application.status %}selected{% endif %}>Select</option>
+                                <option value="rejected" {% if application and 'rejected' in application.status %}selected{% endif %}>Reject</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <input class="custom-btn shadow rounded-pill" type="submit" value="Done">
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

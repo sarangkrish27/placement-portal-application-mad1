@@ -108,7 +108,6 @@ class Application(db.Model):
         nullable=False,
         default='applied'
     )
-    # applied / shortlisted / selected / rejected
 
     applied_at = db.Column(
         db.DateTime,

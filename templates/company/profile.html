@@ -12,7 +12,17 @@
 <div class="container-sm">
     {% set company_logo = company.profile_filename %}
     {% include 'company_header.html' %}
+    
     <div style="min-height: 100vh;" class="main-box mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, msg in messages %}
+                                <div class="alert alert-{{ category }}" role="alert">
+                                    {{ msg }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
         <div class="row">
             <div class="col-6 d-flex flex-column align-items-center justify-content-center gap-2" justify-content-center
                 align-items-center">
@@ -30,8 +40,8 @@
             <div class="info-box col-6 d-flex flex-column justify-content-center">
                 <p><span class="fw-medium">Industry:</span> {{ company.industry }}</p>
                 <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
-                <p><span class="fw-medium">HR Mail:</span> {{ company.user.email }}</p>
-                <p><span class="fw-medium">Website:</span> {{ company.website }}</p>
+                <p><span class="fw-medium">HR Mail:</span> <a style="color: #D35B1F;" href="mailto:{{ company.user.email }}">{{ company.user.email }}</a></p>
+                <p><span class="fw-medium">Website:</span> <a style="color: #D35B1F;" href="{{ company.website }}">{{ company.website }}</a></p>
             </div>
         </div>
         <div class="row mt-5">

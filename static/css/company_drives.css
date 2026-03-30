@@ -26,3 +26,14 @@
     border-radius: 44px;
     margin-right: 10px;
 }
+
+.form-select {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+}
+
+.form-select:focus {
+    border-color: #000 !important;
+    box-shadow: none !important;
+    outline: none;
+}

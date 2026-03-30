@@ -13,7 +13,7 @@
 <div class="container-sm">
     {% include 'admin_header.html' %}
 
-    <div style="height: 100vh;" class="section mt-5">
+    <div style="min-height: 100vh;" class="section mt-5">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, msg in messages %}

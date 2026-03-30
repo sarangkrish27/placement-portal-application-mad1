@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}NIST | Dashboard{% endblock %}
+{% block title %}NIST {{ company.company_name }}  | Dashboard{% endblock %}
 
 {% block css%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/company_drives.css') }}">
 {% endblock %}
 
 {% block content%}
@@ -13,7 +15,124 @@
     {% set company_logo = company.profile_filename %}
     {% include 'company_header.html' %}
     <div style="min-height: 100vh;" class="main-box mt-5">
-      <h1 style="color: #D35B1F;">{{ greet }} {{ company.hr_name }}</h1>
+        <h1 style="color: #D35B1F;">{{ greet }} {{ company.hr_name }}</h1>
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <div class="box-card p-4">
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number</p>
+                        <h3 class="title-text mb-0">Placement Drives</h3>
+                    </div>
+                    <ul class="d-flex justify-content-around mt-3">
+                        <li>Pending: <span style="color: #D35B1F;" class="fw-bold">{{ pending }}</span></li>
+                        <li>Approved: <span style="color: #D35B1F;" class="fw-bold">{{ approved }}</span></li>
+                        <li>Rejected: <span style="color: #D35B1F;" class="fw-bold">{{ rejected_drive }}</span></li>
+                        <li>Closed: <span style="color: #D35B1F;" class="fw-bold">{{ closed }}</span></li>
+                        <li>Total: <span style="color: #D35B1F;" class="fw-bold">{{ pending + approved + rejected_drive + closed
+                                }}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="box-card p-4">
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number</p>
+                        <h3 class="title-text mb-0">Applications</h3>
+                    </div>
+                    <ul class="d-flex justify-content-around mt-3">
+                        <li>Applied: <span style="color: #D35B1F;" class="fw-bold">{{ applied }}</span></li>
+                        <li>Rejected: <span style="color: #D35B1F;" class="fw-bold">{{ rejected }}</span></li>
+                        <li>Shortlisted: <span style="color: #D35B1F;" class="fw-bold">{{ shortlisted }}</span></li>
+                        <li>Selected: <span style="color: #D35B1F;" class="fw-bold">{{ selected }}</span></li>
+                        <li>Total: <span style="color: #D35B1F;" class="fw-bold">{{ applied + rejected + shortlisted + selected
+                                }}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if drives %}
+        <div class="row">
+            <h2 class="mt-5">Drives</h2>
+            {% for drive in drives[-2:] %}
+            <div class="drive-row row mt-3">
+                <div class="col d-flex align-items-center">
+                    <div class="text ms-4">
+                        <div class="box d-flex align-items-center gap-4 mb-2">
+                            <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
+                            {% if drive.status == 'pending' %}
+                            {% set status = 'Pending' %}
+                            {% include 'low_label.html' %}
+                            {% elif drive.status == 'approved' %}
+                            {% set status = 'Approved' %}
+                            {% include 'high_label.html' %}
+                            {% elif drive.status == 'closed' %}
+                            {% set status = 'Closed' %}
+                            {% include 'rejected_label.html' %}
+                            {% else %}
+                            {% set status = 'Closed' %}
+                            {% include 'rejected_label.html' %}
+                            {% endif %}
+                        </div>
+                        <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('company.driveDetails', drive_id=drive.id) }}">
+                        <button class="btn primary-btn btn-dark shadow">
+                            View Detail
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+            <div class="row text-right">
+                <a href="{{ url_for('company.drives') }}" class="mt-2 d-flex justify-content-end"
+                    style="color: #D35B1F;">Show more</a>
+            </div>
+        </div>
+        <div class="row">
+            <h2 class="mt-5">Applications</h2>
+            {% for drive in drives[-2:] %}
+            <div class="layout-row row mt-3 mx-1">
+                <div class="col d-flex align-items-center">
+                    <div class="text ms-4 mt-2">
+                        <div class="d-flex gap-2 mt-2 align-items-baseline">
+                            <h5>{{ drive.job_title }}</h5>
+                            {% if drive.status == 'pending' %}
+                            {% set status = 'Pending' %}
+                            {% include 'low_label.html' %}
+                            {% elif drive.status == 'approved' %}
+                            {% set status = 'Approved' %}
+                            {% include 'high_label.html' %}
+                            {% elif drive.status == 'closed' %}
+                            {% set status = 'Closed' %}
+                            {% include 'rejected_label.html' %}
+                            {% else %}
+                            {% set status = 'Closed' %}
+                            {% include 'rejected_label.html' %}
+                            {% endif %}
+                        </div>
+                        <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('company.applicants', drive_id=drive.id) }}">
+                        <button class="btn btn-dark rounded-pill shadow">
+                            View Applicants
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+            {% endfor %}
+            <div class="row text-right">
+                <a href="{{ url_for('company.applications') }}" class="mt-2 d-flex justify-content-end"
+                    style="color: #D35B1F;">Show more</a>
+            </div>
+
+        </div>
+        {% endif %}
     </div>
 </div>
 

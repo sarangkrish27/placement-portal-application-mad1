@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}NIST {{ company.company_name }}  | Appications{% endblock %}
+
+{% block css%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% endblock %}
+
+{% block content%}
+
+
+<div class="container-sm" style="min-height: 100vh;">
+    {% set company_logo = company.profile_filename %}
+    {% include 'company_header.html' %}
+    <div class="main-box mt-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div style="height: 80vh;">
+            <div class="row d-flex">
+                <div class="col-10">
+                    <h2>All Appications</h2>
+                </div>
+                <div class="col-md-2">
+                    <form method="get" action="{{ url_for('company.applications') }}" id="filterForm"
+                        class="d-flex gap-3">
+                        <select name="filter-by-status" class="form-select mb-4 rounded-pill"
+                            onchange="this.form.submit()">
+                            <option value="">Filter by Status</option>
+                            <option value="pending" {% if request.args.get('filter-by-status')=='pending' %}selected{%
+                                endif %}>Pending</option>
+                            <option value="approved" {% if request.args.get('filter-by-status')=='approved'
+                                %}selected{% endif %}>Approved</option>
+                            <option value="closed" {% if request.args.get('filter-by-status')=='closed' %}selected{%
+                                endif %}>Closed</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            {% if drives %}
+                {% for drive in drives %}
+                <div class="layout-row row mt-3 mx-1">
+                    <div class="col d-flex align-items-center">
+                        <div class="text ms-4 mt-2">
+                            <div class="d-flex gap-2 mt-2 align-items-baseline">
+                                <h5>{{ drive.job_title }}</h5>
+                                {% if drive.status == 'pending' %}
+                                    {% set status = 'Pending' %}
+                                    {% include 'low_label.html' %}
+                                {% elif drive.status == 'approved' %}
+                                    {% set status = 'Approved' %}
+                                    {% include 'high_label.html' %}
+                                {% elif drive.status == 'closed' %}
+                                    {% set status = 'Closed' %}
+                                    {% include 'rejected_label.html' %}
+                                {% else %}
+                                    {% set status = 'Closed' %}
+                                    {% include 'rejected_label.html' %}
+                                {% endif %}
+                            </div>
+                            <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-end align-items-center">
+                        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}">
+                            <button class="btn btn-dark rounded-pill shadow">
+                                View Applicants
+                            </button>
+                        </a>
+                    </div>
+
+                </div>
+                {% endfor %}
+            {% else %}
+                <div style="height: 80vh;"
+                    class="no-drive d-flex flex-column align-items-center justify-content-center gap-4">
+                    <p class="text-secondary">No application found</p>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
