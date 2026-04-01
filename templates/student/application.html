@@ -36,15 +36,18 @@
                     <div class="box d-flex flex-column align-items-start mb-2">
                         <div class="box d-flex align-items-center gap-4 mb-2">
                             <h5>{{ drive.drive.company.company_name }} | {{ drive.drive.job_title }}</h5>
-                        {% if drive.status == 'applied' %}
+                            {% if drive.status == 'applied' %}
                                 {% set status = 'Applied' %}
-                                {% include 'low_label.html' %}
+                                {% include '/labels/orange_label.html' %}
                             {% elif drive.status == 'shortlisted' %}
                                 {% set status = 'Shortlisted' %}
-                                {% include 'medium_label.html' %}
+                                {% include '/labels/blue_label.html' %}
                             {% elif drive.status == 'selected' %}
                                 {% set status = 'Selected' %}
-                                {% include 'high_label.html' %}
+                                {% include '/labels/green_label.html' %}
+                            {% else %}
+                                {% set status = 'Rejected' %}
+                                {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>
                     </div>

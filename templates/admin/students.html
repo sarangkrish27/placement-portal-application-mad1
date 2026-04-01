@@ -75,7 +75,7 @@
                         <h5 class="mb-0">{{ student.name }}</h5>
                     {% if student.user.is_blacklisted == 1 %}
                         {% set status = 'Blacklisted' %}
-                        {% include 'rejected_label.html' %}
+                        {% include '/labels/red_label.html' %}
                     {% endif %}
                     </div>
                     <p class="mb-0">{{ student.degree }} | {{ student.department }}</p>

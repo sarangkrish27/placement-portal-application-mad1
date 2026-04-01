@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    {% if student and role == 'admin' %}
-        NIST ADMIN | {{ student.name }} Edit Profile
-    {% elif student %}
-        NIST | {{ student.name }} Edit Profile
+    {% if student %}
+        NIST {{ student.name }} | Edit Profile
     {% else %}
         NIST | Complete Profile
     {% endif %}

@@ -38,15 +38,15 @@
                             <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
 
                             {% set application = drive.applications | selectattr('student_id', 'equalto', current_user.student.id) | list | first | default(none) %}
-                        {% if application.status == 'applied' %}
+                            {% if application.status == 'applied' %}
                                 {% set status = 'Applied' %}
-                                {% include 'low_label.html' %}
+                                {% include '/labels/orange_label.html' %}
                             {% elif application.status == 'shortlisted' %}
                                 {% set status = 'Shortlisted' %}
-                                {% include 'medium_label.html' %}
+                                {% include '/labels/blue_label.html' %}
                             {% elif application.status == 'selected' %}
                                 {% set status = 'Selected' %}
-                                {% include 'high_label.html' %}
+                                {% include '/labels/green_label.html' %}
                             {% endif %}
                         </div>
                         

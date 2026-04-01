@@ -36,7 +36,9 @@
                 </div>
                 <div class="text ms-4">
                     <div class="box d-flex flex-column align-items-start mb-2">
-                        <h6 class="m-0" style="font-size: 25px;">{{ drive.company.company_name }} | {{ drive.job_title }}</h6>
+                        <div class="box d-flex align-items-center gap-4 mb-2">
+                            <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
+                        </div>
                     </div>
                     <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
                 </div>
@@ -65,7 +67,16 @@
                 </div>
                 <div class="text ms-4">
                     <div class="box d-flex flex-column align-items-start mb-2">
-                        <h6 class="m-0" style="font-size: 25px;">{{ drive.company.company_name }} | {{ drive.job_title }}</h6>
+                        <div class="box d-flex align-items-center gap-4 mb-2">
+                            <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
+                            {% if drive.status == 'closed' %}
+                                {% set status = 'Closed' %}
+                                {% include '/labels/red_label.html' %}
+                            {% elif drive.status == 'rejected' %}
+                                {% set status = 'Rejected' %}
+                                {% include '/labels/red_label.html' %}
+                            {% endif %}
+                        </div>
                     </div>
                     <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
                 </div>

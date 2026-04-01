@@ -29,13 +29,13 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
-        <div class="job-details d-flex justify-content-between">
-            <div class="d-flex align-items-center gap-4">
+        <div class="job-details row align-items-start">
+            <div class="col-12 col-md-8 d-flex align-items-center gap-3 mb-3 mb-md-0">
                 <div class="img-box">
                     <img class="rounded-circle"
                         src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
                 </div>
-                <div class="text-box">
+                <div class="text-box mb-2">
                     <h3 style="font-size: 32px; color: #D35B1F;">{{ company.company_name }}</h3>
                     <p><span>Job Title: </span>{{ drive.job_title }}</p>
                     <p><span>Location:</span> {{ drive.location }}</p>
@@ -48,78 +48,86 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="edit-box">
-    {% if drive.status == 'pending' %}
-        <a href="{{ url_for('company.editDrive', drive_id=drive.id) }}">
-            <button style="padding: 8px 20px;" type="submit" class="btn custom-btn rounded-pill">
-                Edit
-            </button>
-        </a>
-    {% elif drive.status == 'approved' %}
-        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}" class="btn btn-dark rounded-pill px-4">
-            View Applications
-        </a>
-        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
-            data-bs-target="#closeDriveModel">
-            Close Drive
-        </button>
-    {% elif drive.status == 'closed' %}
-        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}" class="btn btn-dark rounded-pill px-4">
-            View Applications
-        </a>
-    {% endif %}
-</div>
+            <div class="col-12 col-md-4 d-flex flex-column flex-md-row justify-content-md-end gap-2">
+                <div class="edit-box d-flex justify-content-end w-100 mb-2">
+                    {% if drive.status == 'pending' %}
+                    <a href="{{ url_for('company.editDrive', drive_id=drive.id) }}">
+                        <button style="padding: 8px 20px;" type="submit" class="btn custom-btn rounded-pill">
+                            Edit
+                        </button>
+                    </a>
+                    {% elif drive.status == 'approved' %}
+                    <div class="w-100 d-flex flex-column flex-sm-row gap-2 justify-content-md-end">
+                        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}"
+                            class="btn btn-dark rounded-pill w-100 w-sm-auto text-center">
+                            View Applications
+                        </a>
 
-        </div>
-        <hr class="mb-4">
-        <div class="job-desc">
-            <h4>Job Description</h4>
-            <p class="mb-4">{{ drive.job_description }}</p>
-        </div>
-        <div class="job-responsibility">
-            <h4>Key Responsibilities</h4>
-            <p class="mb-4">{{ drive.key_responsibility }}</p>
-        </div>
-        <div class="job-eligibility">
-            <h4>Eligibility Criteria</h4>
-            <p>{{ drive.eligible_degrees }} degree in {{ drive.preferred_departments }}</p>
-            <p>Minimum CGPA of {{ drive.cgpa }}/10</p>
-            <p class="mb-4">{{ drive.other_eligibility }}</p>
-        </div>
-        <div class="req-skills">
-            <h4>Required Technical Skills</h4>
-            <p class="mb-4">{{ drive.required_skills }}</p>
-        </div>
-        <div class="pref-skills">
-            <h4>Preferred Skills</h4>
-            <p class="mb-4">{{ drive.preferred_skills }}</p>
-        </div>
-        <div class="compensation_benefits">
-            <h4>Compensation & Benefits</h4>
-            <p class="mb-4">{{ drive.compensation_benefits }}</p>
-        </div>
-    </div>
-</div>
+                        <button type="button" class="btn btn-danger rounded-pill w-100 w-sm-auto" data-bs-toggle="modal"
+                            data-bs-target="#closeDriveModel">
+                            Close Drive
+                        </button>
+                    </div>
+                    {% elif drive.status == 'closed' %}
+                    <a href="{{ url_for('company.applicants', drive_id=drive.id) }}"
+                        class="btn btn-dark rounded-pill px-4">
+                        View Applications
+                    </a>
+                    {% endif %}
+                </div>
 
-<form action="{{ url_for('company.closeDrive', drive_id=drive.id) }}" method="post">
-    <div class="modal fade" id="closeDriveModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Closing is permanent and cannot be reversed.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-danger" value="Close Drive">
-                </div>
+            </div>
+            <hr class="mb-4">
+            <div class="job-desc">
+                <h4>Job Description</h4>
+                <p class="mb-4">{{ drive.job_description }}</p>
+            </div>
+            <div class="job-responsibility">
+                <h4>Key Responsibilities</h4>
+                <p class="mb-4">{{ drive.key_responsibility }}</p>
+            </div>
+            <div class="job-eligibility">
+                <h4>Eligibility Criteria</h4>
+                <p>{{ drive.eligible_degrees }} degree in {{ drive.preferred_departments }}</p>
+                <p>Minimum CGPA of {{ drive.cgpa }}/10</p>
+                <p class="mb-4">{{ drive.other_eligibility }}</p>
+            </div>
+            <div class="req-skills">
+                <h4>Required Technical Skills</h4>
+                <p class="mb-4">{{ drive.required_skills }}</p>
+            </div>
+            <div class="pref-skills">
+                <h4>Preferred Skills</h4>
+                <p class="mb-4">{{ drive.preferred_skills }}</p>
+            </div>
+            <div class="compensation_benefits">
+                <h4>Compensation & Benefits</h4>
+                <p class="mb-4">{{ drive.compensation_benefits }}</p>
             </div>
         </div>
     </div>
-</form>
+    </div>
 
-{% include 'footer.html' %}
-{% endblock %}
+    <form action="{{ url_for('company.closeDrive', drive_id=drive.id) }}" method="post">
+        <div class="modal fade" id="closeDriveModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Closing is permanent and cannot be reversed.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-danger" value="Close Drive">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {% include 'footer.html' %}
+    {% endblock %}

@@ -46,36 +46,36 @@
             {% if drives %}
                 {% for drive in drives %}
                 <div class="layout-row row mt-3 mx-1">
-                    <div class="col d-flex align-items-center">
-                        <div class="text ms-4 mt-2">
-                            <div class="d-flex gap-2 mt-2 align-items-baseline">
-                                <h5>{{ drive.job_title }}</h5>
-                                {% if drive.status == 'pending' %}
-                                    {% set status = 'Pending' %}
-                                    {% include 'low_label.html' %}
-                                {% elif drive.status == 'approved' %}
-                                    {% set status = 'Approved' %}
-                                    {% include 'high_label.html' %}
-                                {% elif drive.status == 'closed' %}
-                                    {% set status = 'Closed' %}
-                                    {% include 'rejected_label.html' %}
-                                {% else %}
-                                    {% set status = 'Closed' %}
-                                    {% include 'rejected_label.html' %}
-                                {% endif %}
-                            </div>
-                            <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
+                <div class="col d-flex align-items-center">
+                    <div class="text ms-4 mt-2">
+                        <div class="d-flex gap-2 mt-2 align-items-baseline">
+                            <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
+                            {% if drive.status == 'pending' %}
+                            {% set status = 'Pending' %}
+                            {% include '/labels/orange_label.html' %}
+                            {% elif drive.status == 'approved' %}
+                            {% set status = 'Approved' %}
+                            {% include '/labels/green_label.html' %}
+                            {% elif drive.status == 'closed' %}
+                            {% set status = 'Closed' %}
+                            {% include '/labels/red_label.html' %}
+                            {% else %}
+                            {% set status = 'Rejected' %}
+                            {% include '/labels/red_label.html' %}
+                            {% endif %}
                         </div>
+                        <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
                     </div>
-                    <div class="col d-flex justify-content-end align-items-center">
-                        <a href="{{ url_for('company.applicants', drive_id=drive.id) }}">
-                            <button class="btn btn-dark rounded-pill shadow">
-                                View Applicants
-                            </button>
-                        </a>
-                    </div>
-
                 </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <a href="{{ url_for('company.applicants', drive_id=drive.id) }}">
+                        <button class="btn btn-dark rounded-pill shadow">
+                            View Applicants
+                        </button>
+                    </a>
+                </div>
+
+            </div>
                 {% endfor %}
             {% else %}
                 <div style="height: 80vh;"

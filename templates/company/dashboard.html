@@ -23,30 +23,61 @@
                         <p class="label-text mb-1">Number</p>
                         <h3 class="title-text mb-0">Placement Drives</h3>
                     </div>
-                    <ul class="d-flex justify-content-around mt-3">
-                        <li>Pending: <span style="color: #D35B1F;" class="fw-bold">{{ pending }}</span></li>
-                        <li>Approved: <span style="color: #D35B1F;" class="fw-bold">{{ approved }}</span></li>
-                        <li>Rejected: <span style="color: #D35B1F;" class="fw-bold">{{ rejected_drive }}</span></li>
-                        <li>Closed: <span style="color: #D35B1F;" class="fw-bold">{{ closed }}</span></li>
-                        <li>Total: <span style="color: #D35B1F;" class="fw-bold">{{ pending + approved + rejected_drive + closed
-                                }}</span></li>
-                    </ul>
+                    <div class="d-grid mt-3" style="grid-template-columns: 1fr 1fr; gap: 10px 16px;">
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Pending</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ pending }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Approved</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ approved }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Rejected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ rejected_drive }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Closed</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ closed }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 8px;">
+                            <span class="text-muted" style="font-size: 0.78rem;">Total</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ pending + approved +
+                                rejected_drive + closed }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
             <div class="col-md-6 mt-3">
                 <div class="box-card p-4">
                     <div class="text-left">
                         <p class="label-text mb-1">Number</p>
                         <h3 class="title-text mb-0">Applications</h3>
                     </div>
-                    <ul class="d-flex justify-content-around mt-3">
-                        <li>Applied: <span style="color: #D35B1F;" class="fw-bold">{{ applied }}</span></li>
-                        <li>Rejected: <span style="color: #D35B1F;" class="fw-bold">{{ rejected }}</span></li>
-                        <li>Shortlisted: <span style="color: #D35B1F;" class="fw-bold">{{ shortlisted }}</span></li>
-                        <li>Selected: <span style="color: #D35B1F;" class="fw-bold">{{ selected }}</span></li>
-                        <li>Total: <span style="color: #D35B1F;" class="fw-bold">{{ applied + rejected + shortlisted + selected
-                                }}</span></li>
-                    </ul>
+                    <div class="d-grid mt-3" style="grid-template-columns: 1fr 1fr; gap: 10px 16px;">
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Applied</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ applied }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Rejected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ rejected }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Shortlisted</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ shortlisted }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Selected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ selected }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 8px;">
+                            <span class="text-muted" style="font-size: 0.78rem;">Total</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ applied + rejected +
+                                shortlisted + selected }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,32 +85,32 @@
         <div class="row">
             <h2 class="mt-5">Drives</h2>
             {% for drive in drives[-2:] %}
-            <div class="drive-row row mt-3">
+            <div class="layout-row row mt-3 mx-1">
                 <div class="col d-flex align-items-center">
-                    <div class="text ms-4">
-                        <div class="box d-flex align-items-center gap-4 mb-2">
+                    <div class="text ms-4 mt-2">
+                        <div class="d-flex gap-2 mt-2 align-items-baseline">
                             <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
                             {% if drive.status == 'pending' %}
                             {% set status = 'Pending' %}
-                            {% include 'low_label.html' %}
+                            {% include '/labels/orange_label.html' %}
                             {% elif drive.status == 'approved' %}
                             {% set status = 'Approved' %}
-                            {% include 'high_label.html' %}
+                            {% include '/labels/green_label.html' %}
                             {% elif drive.status == 'closed' %}
                             {% set status = 'Closed' %}
-                            {% include 'rejected_label.html' %}
+                            {% include '/labels/red_label.html' %}
                             {% else %}
-                            {% set status = 'Closed' %}
-                            {% include 'rejected_label.html' %}
+                            {% set status = 'Rejected' %}
+                            {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>
-                        <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
+                        <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>
                     </div>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">
-                    <a href="{{ url_for('company.driveDetails', drive_id=drive.id) }}">
-                        <button class="btn primary-btn btn-dark shadow">
-                            View Detail
+                    <a href="{{ url_for('company.applicants', drive_id=drive.id) }}">
+                        <button class="btn btn-dark rounded-pill shadow">
+                            View Applicants
                         </button>
                     </a>
                 </div>
@@ -98,19 +129,19 @@
                 <div class="col d-flex align-items-center">
                     <div class="text ms-4 mt-2">
                         <div class="d-flex gap-2 mt-2 align-items-baseline">
-                            <h5>{{ drive.job_title }}</h5>
+                            <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
                             {% if drive.status == 'pending' %}
                             {% set status = 'Pending' %}
-                            {% include 'low_label.html' %}
+                            {% include '/labels/orange_label.html' %}
                             {% elif drive.status == 'approved' %}
                             {% set status = 'Approved' %}
-                            {% include 'high_label.html' %}
+                            {% include '/labels/green_label.html' %}
                             {% elif drive.status == 'closed' %}
                             {% set status = 'Closed' %}
-                            {% include 'rejected_label.html' %}
+                            {% include '/labels/red_label.html' %}
                             {% else %}
-                            {% set status = 'Closed' %}
-                            {% include 'rejected_label.html' %}
+                            {% set status = 'Rejected' %}
+                            {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>
                         <p>{{ drive.location }} | {{ drive.job_type }} | {{ drive.work_mode }}</p>

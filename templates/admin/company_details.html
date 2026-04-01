@@ -3,96 +3,101 @@
 {% block title %}NIST ADMIN | {{ company.company_name }}{% endblock %}
 
 {% block css%}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/companies_details.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block content%}
 
 <div class="container-sm">
     {% include 'admin_header.html' %}
+
     <div style="min-height: 100vh;" class="main-box mt-5">
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, msg in messages %}
-            <div class="alert alert-{{ category }} mt-5" role="alert">
-                {{ msg }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-        <div class="row detail-box d-flex justify-content-between">
-            <div class="d-flex col-12 col-md-8">
-                <div class="img-box">
-                    <img class="rounded-circle"
-                        src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}" alt="">
-                </div>
-                <div class="text-box ps-4">
-                    <h5 style="color: #D35B1F;" class="company-name">{{ company.company_name }}</h5>
-                    <p class="mb-0">{{ company.industry }}</p>
-                    <p class="mb-0">HR Name: {{ company.hr_name }}</p>
-                    <p class="mb-0">HR Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-                    <p class="mb-0">Website: <a href="{{ company.website }}">{{ company.website }}</a></p>
-                    {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
-                    <a style="color: #D35B1F;" href="{{ url_for('admin.companyDrives', company_id=company.id) }}">
-                        View drives
-                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
-  <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z"/>
-  <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z"/>
-</svg>
-                    </a>
-                    {% endif %}
-                    {% if company.user.is_blacklisted %}
-                    <p class="mb-0 text-danger fw-bold">Status: Blacklisted</p>
-                    <p class="mb-0 text-danger fw-bold">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="action-box col-12 col-md-4 mt-3 mt-md-0">
-                {% if company.approval_status == 'pending' %}
-                <div class="btn-box d-flex justify-content-end gap-3">
-                    <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
-                        <button type="submit" class="btn rounded-pill btn-danger">
-                            Reject
-                        </button>
-                    </form>
-                    <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
-                        <button type="submit" class="btn rounded-pill btn-success">
-                            Approve
-                        </button>
-                    </form>
-                </div>
-                {% else %}
-                <div class="row">
-                    <div class="col-12 d-flex flex-wrap gap-2
-            justify-content-start justify-content-md-end">
-                        <a href="{{ url_for('admin.editCompany', company_id=company.id) }}"><button type="button"
-                                class="btn btn-dark rounded-pill">Edit</button></a>
-                        {% if company.user.is_blacklisted %}
-        <a href="{{ url_for('admin.userRevokeBlacklist', uid=company.uid) }}">
-          <button type="button" class="btn btn-warning rounded-pill">
-          Revoke Blacklist
-        </button>
-        </a>
-        {% else %}
-        <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
-          data-bs-target="#blacklistModel">
-          Blacklist
-        </button>
-        {% endif %}
-                        <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#deleteModel">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
         </div>
-        <hr>
-        <div class="desc-box mt-3">
-            <p>{{ company.description }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="row">
+    <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-2">
+        <div class="img-box">
+            <img class="preview-image"
+                src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                alt="profile picture">
+        </div>
+        <div class="name">
+            <h2 class="fw-semibold text-center">{{ company.company_name }}</h2>
+            <p>{{ company.industry }}</p>
         </div>
     </div>
+
+    <div class="info-box col-12 col-md-6 d-flex flex-column justify-content-center align-items-center align-items-md-start text-center text-md-start mt-3 mt-md-0">
+        <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
+        <p><span class="fw-medium">HR Mail:</span> <a style="color: #D35B1F;"
+                href="mailto:{{ company.user.email }}">{{ company.user.email }}</a></p>
+        <p><span class="fw-medium">Website:</span> <a style="color: #D35B1F;" href="{{ company.website }}">{{
+                company.website }}</a></p>
+        {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
+        <a href="{{ url_for('admin.companyDrives', company_id=company.id) }}"><button type="button"
+                        class="btn btn-dark rounded-pill">View Drives</button></a>
+        {% endif %}
+        {% if company.user.is_blacklisted %}
+        <p class="mb-0 text-danger fw-medium">Status: Blacklisted</p>
+        <p class="mb-0 text-danger fw-medium">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
+        {% endif %}
+    </div>
+</div>
+        <div class="row mt-5">
+            <div class="col">
+                <h3>About the Company</h3>
+                <p class="fs-5 mt-2">{{ company.description }}</p>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+    <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end">
+        {% if company.approval_status == 'pending' %}
+        <div class="btn-box d-flex justify-content-center justify-content-md-end gap-3">
+            <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
+                <button type="submit" class="btn rounded-pill btn-danger">
+                    Reject
+                </button>
+            </form>
+            <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
+                <button type="submit" class="btn rounded-pill btn-success">
+                    Approve
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+            <a href="{{ url_for('admin.editCompany', company_id=company.id) }}">
+                <button type="button" class="btn custom-btn rounded-pill">Edit</button>
+            </a>
+            {% if company.user.is_blacklisted %}
+            <a href="{{ url_for('admin.userRevokeBlacklist', uid=company.uid) }}">
+                <button type="button" class="btn btn-warning rounded-pill">
+                    Revoke Blacklist
+                </button>
+            </a>
+            {% else %}
+            <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+                data-bs-target="#blacklistModel">
+                Blacklist
+            </button>
+            {% endif %}
+            <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                data-bs-target="#deleteModel">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+    </div>
+
 </div>
 
 <form action="{{ url_for('admin.userBlacklist', uid=company.uid) }}" method="post">
@@ -141,3 +146,103 @@
 
 {% include 'footer.html' %}
 {% endblock %}
+
+
+<div style="min-height: 100vh;" class="main-box mt-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, msg in messages %}
+    <div class="alert alert-{{ category }}" role="alert">
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-6 d-flex flex-column align-items-center justify-content-center gap-2" justify-content-center
+            align-items-center">
+            <div class="img-box">
+                <img class="preview-image"
+                    src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                    alt="profile picture">
+            </div>
+            <div class="name">
+                <h2 class="fw-semibold text-center">{{ company.company_name }}</h2>
+            </div>
+
+        </div>
+
+        <div class="info-box col-6 d-flex flex-column justify-content-center">
+            <p><span class="fw-medium">Industry:</span> {{ company.industry }}</p>
+            <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
+            <p><span class="fw-medium">HR Mail:</span> <a style="color: #D35B1F;"
+                    href="mailto:{{ company.user.email }}">{{ company.user.email }}</a></p>
+            <p><span class="fw-medium">Website:</span> <a style="color: #D35B1F;" href="{{ company.website }}">{{
+                    company.website }}</a></p>
+            {% if not company.user.is_blacklisted and company.approval_status == 'approved' %}
+            <a style="color: #D35B1F;" href="{{ url_for('admin.companyDrives', company_id=company.id) }}">
+                View drives
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor"
+                    class="bi bi-link-45deg" viewBox="0 0 16 16">
+                    <path
+                        d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-.128-1.287z" />
+                    <path
+                        d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z" />
+                </svg>
+            </a>
+            {% endif %}
+            {% if company.user.is_blacklisted %}
+            <p class="mb-0 text-danger fw-medium">Status: Blacklisted</p>
+            <p class="mb-0 text-danger fw-medium">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3>About the Company</h3>
+            <p class="fs-5 mt-2">{{ company.description }}</p>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-end">
+        <div class="col-3 d-flex justify-content-end">
+            {% if company.approval_status == 'pending' %}
+            <div class="btn-box d-flex justify-content-end gap-3">
+                <form action="{{ url_for('admin.reject_company', company_id=company.id) }}" method="POST">
+                    <button type="submit" class="btn rounded-pill btn-danger">
+                        Reject
+                    </button>
+                </form>
+                <form action="{{ url_for('admin.approve_company', company_id=company.id) }}" method="POST">
+                    <button type="submit" class="btn rounded-pill btn-success">
+                        Approve
+                    </button>
+                </form>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="col-12 d-flex flex-wrap gap-2
+            justify-content-start justify-content-md-end">
+                    <a href="{{ url_for('admin.editCompany', company_id=company.id) }}"><button type="button"
+                            class="btn btn-dark rounded-pill">Edit</button></a>
+                    {% if company.user.is_blacklisted %}
+                    <a href="{{ url_for('admin.userRevokeBlacklist', uid=company.uid) }}">
+                        <button type="button" class="btn btn-warning rounded-pill">
+                            Revoke Blacklist
+                        </button>
+                    </a>
+                    {% else %}
+                    <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal"
+                        data-bs-target="#blacklistModel">
+                        Blacklist
+                    </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                        data-bs-target="#deleteModel">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

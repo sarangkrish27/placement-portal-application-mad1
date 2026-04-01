@@ -15,46 +15,47 @@
     
     <div style="min-height: 100vh;" class="main-box mt-5">
         {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, msg in messages %}
-                                <div class="alert alert-{{ category }}" role="alert">
-                                    {{ msg }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-        <div class="row">
-            <div class="col-6 d-flex flex-column align-items-center justify-content-center gap-2" justify-content-center
-                align-items-center">
-                <div class="img-box">
-                    <img class="preview-image"
-                        src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
-                        alt="profile picture">
-                </div>
-                <div class="name">
-                    <h2 class="fw-semibold text-center">{{ company.company_name }}</h2>
-                </div>
-
-            </div>
-
-            <div class="info-box col-6 d-flex flex-column justify-content-center">
-                <p><span class="fw-medium">Industry:</span> {{ company.industry }}</p>
-                <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
-                <p><span class="fw-medium">HR Mail:</span> <a style="color: #D35B1F;" href="mailto:{{ company.user.email }}">{{ company.user.email }}</a></p>
-                <p><span class="fw-medium">Website:</span> <a style="color: #D35B1F;" href="{{ company.website }}">{{ company.website }}</a></p>
-            </div>
+        {% if messages %}
+        {% for category, msg in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ msg }}
         </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="row">
+    <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center gap-2">
+        <div class="img-box">
+            <img class="preview-image"
+                src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                alt="profile picture">
+        </div>
+        <div class="name">
+            <h2 class="fw-semibold text-center">{{ company.company_name }}</h2>
+            <p>{{ company.industry }}</p>
+        </div>
+    </div>
+
+    <div class="info-box col-12 col-md-6 d-flex flex-column justify-content-center align-items-center align-items-md-start text-center text-md-start mt-3 mt-md-0">
+        <p><span class="fw-medium">HR Name:</span> {{ company.hr_name }}</p>
+        <p><span class="fw-medium">HR Mail:</span> <a style="color: #D35B1F;"
+                href="mailto:{{ company.user.email }}">{{ company.user.email }}</a></p>
+        <p><span class="fw-medium">Website:</span> <a style="color: #D35B1F;" href="{{ company.website }}">{{
+                company.website }}</a></p>
+        
+        <a href="{{ url_for('company.editProfile', company_id=company.id) }}">
+                <button type="button" class="btn custom-btn rounded-pill">Edit</button>
+            </a>
+        {% if company.user.is_blacklisted %}
+        <p class="mb-0 text-danger fw-medium">Status: Blacklisted</p>
+        <p class="mb-0 text-danger fw-medium">Reason for blacklist: {{ company.user.blacklist_reason }}</p>
+        {% endif %}
+    </div>
+</div>
         <div class="row mt-5">
             <div class="col">
                 <h3>About the Company</h3>
                 <p class="fs-5 mt-2">{{ company.description }}</p>
-            </div>
-        </div>
-        <div class="row d-flex justify-content-end">
-            <div class="col-3 d-flex justify-content-end">
-                <a href="{{ url_for('company.editProfile') }}">
-                    <button type="button" class="custom-btn rounded-pill shadow">Edit Profile</button>
-                </a>
             </div>
         </div>
     </div>

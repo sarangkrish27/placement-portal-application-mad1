@@ -10,40 +10,11 @@
 
 
 <div class="container-sm">
-  {% include 'admin_header.html' %}
+    {% include 'admin_header.html' %}
     <div style="min-height: 100vh;" class="main-box mt-5">
-      <h1 style="color: #D35B1F;">{{ greet }} Admin</h1>
-      <div class="row">
-            <div class="col-md-4 mt-3">
-                <div class="box-card p-4">
-                    {% if companies %}
-                    <div class="text-left">
-                        <p class="label-text mb-1">Number of</p>
-                        <h3 class="title-text mb-0">Companies</h3>
-                    </div>
+        <h1 style="color: #D35B1F;">{{ greet }} Admin</h1>
 
-                    <h1 class="count-text mb-0 text-end">{{ companies }}</h1>
-                    {% else %}
-                <p class="label-text mb-1">No data</p>
-                {% endif %}
-                </div>
-            </div>
-
-            <div class="col-md-4 mt-3">
-                <div class="box-card p-4">
-                    {% if drives %}
-                    <div class="text-left">
-                        <p class="label-text mb-1">Number of</p>
-                        <h3 class="title-text mb-0">Placement Drives</h3>
-                    </div>
-
-                    <h1 class="count-text mb-0 text-end">{{ drives }}</h1>
-                    {% else %}
-                <p class="label-text mb-1">No data</p>
-                {% endif %}
-                </div>
-            </div>
-
+        <div class="row">
             <div class="col-md-4 mt-3">
                 <div class="box-card p-4">
                     {% if students %}
@@ -52,12 +23,186 @@
                         <h3 class="title-text mb-0">Students</h3>
                     </div>
 
-                    <h1 class="count-text mb-0 text-end">{{ students }}</h1>
+                    <h1 class="count-text mb-0 text-end">{{ students | length }}</h1>
                     {% else %}
-                <p class="label-text mb-1">No data</p>
-                {% endif %}
+                    <p class="label-text mb-1">No data</p>
+                    {% endif %}
                 </div>
             </div>
+
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    {% if companies %}
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number of</p>
+                        <h3 class="title-text mb-0">Companies</h3>
+                    </div>
+
+                    <h1 class="count-text mb-0 text-end">{{ companies | length }}</h1>
+                    {% else %}
+                    <p class="label-text mb-1">No data</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    {% if students %}
+                    <div class="text-left">
+                        <p class="label-text mb-1">Placemnet</p>
+                        <h3 class="title-text mb-0">Rate</h3>
+                    </div>
+
+                    <h1 class="count-text mb-0 text-end">{{ placement_rate }}%</h1>
+                    {% else %}
+                    <p class="label-text mb-1">No data</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-3">
+                <div class="box-card p-4">
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number</p>
+                        <h3 class="title-text mb-0">Placement Drives</h3>
+                    </div>
+                    <div class="d-grid mt-3" style="grid-template-columns: 1fr 1fr; gap: 10px 16px;">
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Pending</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ pending }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Approved</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ approved }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Rejected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ rejected_drive }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Closed</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ closed }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 8px;">
+                            <span class="text-muted" style="font-size: 0.78rem;">Total</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ pending + approved +
+                                rejected_drive + closed }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-3">
+                <div class="box-card p-4">
+                    <div class="text-left">
+                        <p class="label-text mb-1">Number</p>
+                        <h3 class="title-text mb-0">Applications</h3>
+                    </div>
+                    <div class="d-grid mt-3" style="grid-template-columns: 1fr 1fr; gap: 10px 16px;">
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Applied</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ applied }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Rejected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ rejected }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Shortlisted</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ shortlisted }}</div>
+                        </div>
+                        <div>
+                            <span class="text-muted" style="font-size: 0.78rem;">Selected</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ selected }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 8px;">
+                            <span class="text-muted" style="font-size: 0.78rem;">Total</span>
+                            <div style="color: #D35B1F; font-weight: 700; font-size: 1.1rem;">{{ applied + rejected +
+                                shortlisted + selected }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    <h3 class="title-text mb-3">Students</h3>
+                    {% if students %}
+                        {% for student in students[0:3] %}
+                    <div class="row mb-2">
+                        <div class="col-md-2"><img class="rounded-circle" height="40px"
+                                src="{{ url_for('static', filename='uploads/profiles/' + student.profile_filename) }}"
+                                alt=""></div>
+                        <div class="col-md-10">
+                            <p class="mb-0">{{ student.name }}</p>
+                            <p class="mb-0 text-secondary">{{ student.department }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row text-right">
+                        <a href="{{ url_for('admin.students') }}" class="mt-1 d-flex justify-content-end"
+                            style="color: #D35B1F;">Show more</a>
+                    </div>
+                    {% else %}
+                        <p>No Students</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    <h3 class="title-text mb-3">Companies</h3>
+                    {% if companies %}
+                        {% for company in companies[0:3] %}
+                    <div class="row mb-2">
+                        <div class="col-md-2"><img class="rounded-circle" height="40px"
+                                src="{{ url_for('static', filename='uploads/profiles/' + company.profile_filename) }}"
+                                alt=""></div>
+                        <div class="col-md-10">
+                            <p class="mb-0">{{ company.company_name }}</p>
+                            <p class="mb-0 text-secondary">{{ company.industry }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row text-right">
+                        <a href="{{ url_for('admin.companies') }}" class="mt-1 d-flex justify-content-end"
+                            style="color: #D35B1F;">Show more</a>
+                    </div>
+                    {% else %}
+                        <p>No Students</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <div class="box-card p-4">
+                    <h3 class="title-text mb-3">Drives</h3>
+                    {% if drives %}
+                        {% for drive in drives[0:3] %}
+                    <div class="row mb-2">
+                        <div class="col-md-2"><img class="rounded-circle" height="40px"
+                                src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}"
+                                alt=""></div>
+                        <div class="col-md-10">
+                            <p class="mb-0">{{ drive.job_title }}</p>
+                            <p class="mb-0 text-secondary">{{ drive.company.company_name }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row text-right">
+                        <a href="{{ url_for('admin.drives') }}" class="mt-1 d-flex justify-content-end"
+                            style="color: #D35B1F;">Show more</a>
+                    </div>
+                    {% else %}
+                        <p>No Students</p>
+                    {% endif %}
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

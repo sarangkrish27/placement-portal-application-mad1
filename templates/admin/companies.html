@@ -139,7 +139,7 @@
                             <h5 class="mb-0">{{ company.company_name }}</h5>
                             {% if company.user.is_blacklisted == 1 %}
                             {% set status = 'Blacklisted' %}
-                            {% include 'rejected_label.html' %}
+                            {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>
                         <p>{{ company.industry }}</p>

@@ -24,7 +24,7 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-end gap-2">
         <a href="{{ url_for('admin.editStudent', student_id=student.id) }}">
-          <button type="button" class="btn btn-dark rounded-pill">Edit</button>
+          <button type="button" class="btn custom-btn rounded-pill">Edit</button>
         </a>
         {% if student.user.is_blacklisted %}
         <a href="{{ url_for('admin.userRevokeBlacklist', uid=student.uid) }}">

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}NIST | {{ user.student.name }}{% endblock %}
+{% block title %}NIST {{ user.student.name }} | Profile{% endblock %}
 
 {% block css%}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
@@ -12,7 +12,7 @@
 <div class="container-sm">
     {% set user = user %}
     {% include 'student_header.html' %}
-    <div style="min-height: 100vh;" class="main-box mt-5">
+    <div style="min-height: 80vh;" class="main-box mt-5">
         {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, msg in messages %}
@@ -24,8 +24,8 @@
 {% endwith %}
         <div class="row">
             <div class="col-12 d-flex justify-content-end">
-                <a href="{{ url_for('student.editProfile') }}"><button type="button" class="btn btn-dark rounded-pill">
-                    Edit profile</button></a>
+                <a href="{{ url_for('student.editProfile') }}"><button type="button" class="btn custom-btn rounded-pill">
+                    Edit Profile</button></a>
             </div>
         </div>
         <div class="row main-box">

@@ -56,16 +56,16 @@
                             <h5>{{ application.student.name }}</h5>
                             {% if application.status == 'applied' %}
                                 {% set status = 'Applied' %}
-                                {% include 'low_label.html' %}
+                                {% include '/labels/orange_label.html' %}
                             {% elif application.status == 'shortlisted' %}
                                 {% set status = 'Shortlist' %}
-                                {% include 'medium_label.html' %}
+                                {% include '/labels/blue_label.html' %}
                             {% elif application.status == 'selected' %}
                                 {% set status = 'Selected' %}
-                                {% include 'high_label.html' %}
+                                {% include '/labels/green_label.html' %}
                             {% else %}
                                 {% set status = 'Rejected' %}
-                                {% include 'rejected_label.html' %}
+                                {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>
                         <p>{{ application.student.degree }} | {{ application.student.department }}</p>

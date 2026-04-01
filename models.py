@@ -115,9 +115,9 @@ class Application(db.Model):
     )
 
     student = db.relationship(
-        'Student',
-        backref=db.backref('applications', lazy=True)
-    )
+    'Student',
+    backref=db.backref('applications', lazy=True, cascade='all, delete-orphan')
+)
 
     drive = db.relationship(
         'PlacementDrive',

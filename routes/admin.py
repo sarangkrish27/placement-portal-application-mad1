@@ -18,10 +18,52 @@ admin_bp = Blueprint('admin', __name__)
 @admin_required
 def dashboard():
     greeting = greet(datetime.now().hour)
-    companies = Company.query.filter_by(approval_status='approved').count()
-    drives = PlacementDrive.query.filter_by(status='approved').count()
-    students = Student.query.count()
-    return render_template('/admin/dashboard.html', greet=greeting, companies=companies, drives=drives, students=students)
+    companies = Company.query.filter_by(approval_status='approved').all()
+    drives = PlacementDrive.query.all()
+    applications = Application.query.all()
+    students = Student.query.all()
+    pending, approved, rejected_drive, closed = 0, 0, 0, 0
+    for drive in drives:
+        if drive.status == 'pending':
+            pending+=1
+        elif drive.status == 'approved':
+            approved+=1
+        elif drive.status == 'rejected':
+            reject_drive+=1
+        else:
+            closed+=1
+
+    applied, rejected, shortlisted, selected = 0, 0, 0, 0
+    for application in applications:
+        if application.status == 'applied':
+            applied+=1
+        elif application.status == 'rejected':
+            rejected+=1
+        elif application.status == 'shortlisted':
+            shortlisted+=1
+        else:
+            selected+=1
+
+    placed_students = Student.query.join(Application).filter(
+        Application.status == 'selected'
+    ).count()
+
+    placement_rate = round((placed_students / len(students)) * 100) if len(students) > 0 else 0
+    return render_template('/admin/dashboard.html', 
+                           greet=greeting, 
+                           companies=companies, 
+                           drives=drives, 
+                           students=students,
+                           pending=pending,
+                           approved=approved,
+                           rejected_drive=rejected_drive,
+                           closed=closed,
+                           applied=applied,
+                           rejected=rejected,
+                           shortlisted=shortlisted,
+                           selected=selected,
+                           placement_rate=placement_rate,
+                           )
 
 @admin_bp.route('/search', methods=['GET', 'POST'])
 @login_required
@@ -256,7 +298,12 @@ def editDrive(drive_id):
 @admin_required
 def companyDrives(company_id):
     pending_request = PlacementDrive.query.filter_by(company_id=company_id, status='pending').all()
-    all_drives = PlacementDrive.query.filter_by(company_id=company_id, status='approved').order_by(PlacementDrive.id.desc()).all()
+    all_drives = (
+    PlacementDrive.query
+    .filter(PlacementDrive.company_id == company_id, PlacementDrive.status != 'pending')
+    .order_by(PlacementDrive.id.desc())
+    .all()
+)
     return render_template('admin/drives.html', pending_request=pending_request, all_drives=all_drives)
 
 @admin_bp.route("/approve-company/<int:company_id>", methods=["POST"])
@@ -335,10 +382,15 @@ def userRevokeBlacklist(uid):
 @admin_required
 def userDelete(uid):
     user = User.query.filter_by(id=uid).first()
+    role = user.role
     db.session.delete(user)
     db.session.commit()
-    flash("Student deleted successfully!", "success")
-    return redirect(url_for('admin.students'))
+    if role == 'student':
+        flash("Student deleted successfully!", "success")
+        return redirect(url_for('admin.students'))
+    else:
+        flash("Company deleted successfully!", "success")
+        return redirect(url_for('admin.companies'))
 
 @admin_bp.route('/drive/delete/<int:drive_id>', methods=['POST'])
 @login_required
