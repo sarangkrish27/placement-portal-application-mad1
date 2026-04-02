@@ -33,8 +33,6 @@
                         <select name="filter-by-status" class="form-select mb-4 rounded-pill"
                             onchange="this.form.submit()">
                             <option value="">Filter by Status</option>
-                            <option value="pending" {% if request.args.get('filter-by-status')=='pending' %}selected{%
-                                endif %}>Pending</option>
                             <option value="approved" {% if request.args.get('filter-by-status')=='approved'
                                 %}selected{% endif %}>Approved</option>
                             <option value="closed" {% if request.args.get('filter-by-status')=='closed' %}selected{%

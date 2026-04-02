@@ -149,7 +149,7 @@ def companyDetails(company_id):
 @login_required
 @student_required
 def companySpecificDrives(company_id):
-    drives = PlacementDrive.query.filter_by(company_id=company_id, status = 'approved').all()
+    drives = PlacementDrive.query.filter_by(company_id=company_id, status = 'approved').order_by(PlacementDrive.id.desc()).all()
     return render_template('/student/drives.html', drives=drives, user=current_user)
 
 @student_bp.route('/drives', methods=['GET', 'POST'])

@@ -202,7 +202,14 @@ def companies():
 @admin_required
 def drives():
     pending_request = PlacementDrive.query.filter_by(status='pending').all()
-    all_drives = PlacementDrive.query.filter(PlacementDrive.status!='pending').order_by(PlacementDrive.id.desc()).all()
+    status = request.args.get("filter-by-status")
+
+    if status == 'approved':
+        all_drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.id.desc()).all()
+    elif status == 'closed':
+        all_drives = PlacementDrive.query.filter_by(status='closed').order_by(PlacementDrive.id.desc()).all()
+    else:
+        all_drives = PlacementDrive.query.order_by(PlacementDrive.id.desc()).all()
     return render_template('/admin/drives.html', pending_request=pending_request, all_drives=all_drives)
 
 @admin_bp.route('/<int:drive_id>/details')

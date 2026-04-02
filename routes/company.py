@@ -229,14 +229,15 @@ def applications():
     company = Company.query.filter_by(uid=current_user.id).first()
     status = request.args.get("filter-by-status")
 
-    if status == 'pending':
-        drives = PlacementDrive.query.filter_by(company_id=company.id, status='pending').all()
-    elif status == 'approved':
+    if status == 'approved':
         drives = PlacementDrive.query.filter_by(company_id=company.id, status='approved').all()
     elif status == 'closed':
         drives = PlacementDrive.query.filter_by(company_id=company.id, status='closed').all()
     else:
-        drives = PlacementDrive.query.filter_by(company_id=company.id).all()
+        drives = PlacementDrive.query.filter(
+    PlacementDrive.company_id == company.id,
+    PlacementDrive.status != 'pending'
+).all()
 
     return render_template('/company/applications.html', company=company, drives=drives[::-1])
 

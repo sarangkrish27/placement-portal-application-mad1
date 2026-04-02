@@ -56,7 +56,25 @@
         {% endif %}
 
         <div class="company-list mt-5">
-            <h2>All Drives</h2>
+            <div class="btn-row d-flex justify-content-between">
+            <div class="">
+                <h2>All Drives</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <form method="get" action="{{ url_for('admin.drives') }}" id="filterForm"
+                        class="d-flex gap-3">
+                        <select name="filter-by-status" class="form-select mb-4 rounded-pill"
+                            onchange="this.form.submit()">
+                            <option value="">Filter by Status</option>
+                            <option value="approved" {% if request.args.get('filter-by-status')=='approved'
+                                %}selected{% endif %}>Active</option>
+                            <option value="closed" {% if request.args.get('filter-by-status')=='closed' %}selected{%
+                                endif %}>Closed</option>
+                        </select>
+                    </form>
+            </div>
+        </div>
+            
             {% if all_drives %}
             {% for drive in all_drives %}
              <div class="layout-row row mt-4 mx-1 align-items-center">
