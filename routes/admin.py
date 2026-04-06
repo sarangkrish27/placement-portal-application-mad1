@@ -18,10 +18,10 @@ admin_bp = Blueprint('admin', __name__)
 @admin_required
 def dashboard():
     greeting = greet(datetime.now().hour)
-    companies = Company.query.filter_by(approval_status='approved').all()
-    drives = PlacementDrive.query.all()
+    companies = Company.query.filter_by(approval_status='approved').order_by(Company.company_name).all()
+    drives = PlacementDrive.query.filter(PlacementDrive.status!='pending').order_by(PlacementDrive.job_title).all()
     applications = Application.query.all()
-    students = Student.query.all()
+    students = Student.query.order_by(Student.name).all()
     pending, approved, rejected_drive, closed = 0, 0, 0, 0
     for drive in drives:
         if drive.status == 'pending':
@@ -45,8 +45,8 @@ def dashboard():
             selected+=1
 
     placed_students = Student.query.join(Application).filter(
-        Application.status == 'selected'
-    ).count()
+    Application.status == 'selected'
+).distinct(Student.id).count()
 
     placement_rate = round((placed_students / len(students)) * 100) if len(students) > 0 else 0
     return render_template('/admin/dashboard.html', 
@@ -75,7 +75,7 @@ def search():
         keyword = request.form.get('search-input')
 
         if search_filter == 'Companies':
-            results = Company.query.join(User).filter(Company.company_name.ilike(f"%{keyword}%")).all()
+            results = Company.query.join(User).filter(Company.company_name.ilike(f"%{keyword}%")).order_by(Company.company_name).all()
         
         elif search_filter == 'Students':
             try:
@@ -83,22 +83,22 @@ def search():
                 results = Student.query.with_entities(
                     Student.id, Student.profile_filename, Student.name,
                     Student.degree, Student.department
-                ).filter(Student.id == student_id).all()
+                ).filter(Student.id == student_id).order_by(Student.name).all()
 
             except ValueError:
                 if keyword.endswith("@smail.nist.edu"):
                     results = Student.query.with_entities(
                         Student.id, Student.profile_filename, Student.name,
                         Student.degree, Student.department
-                    ).join(Student.user).filter(User.email == keyword).all()
+                    ).join(Student.user).filter(User.email == keyword).order_by(Student.name).all()
                 else:
                     results = Student.query.with_entities(
                         Student.id, Student.profile_filename, Student.name,
                         Student.degree, Student.department
-                    ).filter(Student.name.ilike(f"%{keyword}%")).all()
+                    ).filter(Student.name.ilike(f"%{keyword}%")).order_by(Student.name).all()
 
         elif search_filter == 'Drives':
-            results = PlacementDrive.query.join(Company).filter(PlacementDrive.job_title.ilike(f"%{keyword}%")).all()
+            results = PlacementDrive.query.join(Company).filter(PlacementDrive.job_title.ilike(f"%{keyword}%")).order_by(PlacementDrive.job_title).all()
 
         else:
             flash("Select search by", "danger")
@@ -117,13 +117,13 @@ def students():
     degree = request.args.get("filter-by-degree")
     department = request.args.get("filter-by-department")
 
-    query = Student.query
+    query = Student.query.order_by(Student.name)
 
     if degree:
-        query = query.filter(Student.degree == degree)
+        query = query.filter(Student.degree == degree).order_by(Student.name)
 
     if department:
-        query = query.filter(Student.department == department)
+        query = query.filter(Student.department == department).order_by(Student.name)
 
     students = query.all()
     return render_template('/admin/students.html', students=students)
@@ -178,7 +178,7 @@ def editStudent(student_id):
 @login_required
 @admin_required
 def studentApplications(student_id):
-    applications = Application.query.filter_by(student_id=student_id).all()
+    applications = Application.query.filter_by(student_id=student_id).order_by(Application.applied_at.desc()).all()
     return render_template('admin/student_applications.html', applications=applications)
 
 @admin_bp.route('/companies')
@@ -187,7 +187,7 @@ def studentApplications(student_id):
 def companies():
     pending_request = Company.query.filter_by(approval_status='pending').all()
 
-    query = Company.query.filter_by(approval_status='approved')
+    query = Company.query.filter_by(approval_status='approved').order_by(Company.company_name)
 
     industry = request.args.get("filter-by-industry")
     if industry:
@@ -205,11 +205,11 @@ def drives():
     status = request.args.get("filter-by-status")
 
     if status == 'approved':
-        all_drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.id.desc()).all()
+        all_drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.created_at.desc()).all()
     elif status == 'closed':
-        all_drives = PlacementDrive.query.filter_by(status='closed').order_by(PlacementDrive.id.desc()).all()
+        all_drives = PlacementDrive.query.filter_by(status='closed').order_by(PlacementDrive.created_at.desc()).all()
     else:
-        all_drives = PlacementDrive.query.order_by(PlacementDrive.id.desc()).all()
+        all_drives = PlacementDrive.query.filter(PlacementDrive.status!='pending').order_by(PlacementDrive.created_at.desc()).all()
     return render_template('/admin/drives.html', pending_request=pending_request, all_drives=all_drives)
 
 @admin_bp.route('/<int:drive_id>/details')

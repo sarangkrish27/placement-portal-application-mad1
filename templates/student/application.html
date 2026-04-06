@@ -33,8 +33,8 @@
                         src="{{ url_for('static', filename='uploads/profiles/' + drive.drive.company.profile_filename) }}" alt="">
                 </div>
                 <div class="text ms-4">
-                    <div class="box d-flex flex-column align-items-start mb-2">
-                        <div class="box d-flex align-items-center gap-4 mb-2">
+                    <div class="box d-flex flex-column align-items-start">
+                        <div class="box d-flex align-items-center gap-4">
                             <h5>{{ drive.drive.company.company_name }} | {{ drive.drive.job_title }}</h5>
                             {% if drive.status == 'applied' %}
                                 {% set status = 'Applied' %}
@@ -52,6 +52,7 @@
                         </div>
                     </div>
                     <p class="mb-0">{{ drive.drive.location }} | {{ drive.drive.work_mode }} | {{ drive.drive.job_type }}</p>
+                    <p class="text-secondary mb-0">Applied on: {{ drive.applied_at.strftime('%d %B %Y') }}</p>
                 </div>
             </div>
             <div class="col d-flex justify-content-end align-items-center">

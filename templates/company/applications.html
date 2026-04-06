@@ -34,7 +34,7 @@
                             onchange="this.form.submit()">
                             <option value="">Filter by Status</option>
                             <option value="approved" {% if request.args.get('filter-by-status')=='approved'
-                                %}selected{% endif %}>Approved</option>
+                                %}selected{% endif %}>Active</option>
                             <option value="closed" {% if request.args.get('filter-by-status')=='closed' %}selected{%
                                 endif %}>Closed</option>
                         </select>
@@ -48,17 +48,8 @@
                     <div class="text ms-4 mt-2">
                         <div class="d-flex gap-2 mt-2 align-items-baseline">
                             <h5 class="mb-0" style="font-size: 25px;">{{ drive.job_title }}</h5>
-                            {% if drive.status == 'pending' %}
-                            {% set status = 'Pending' %}
-                            {% include '/labels/orange_label.html' %}
-                            {% elif drive.status == 'approved' %}
-                            {% set status = 'Approved' %}
-                            {% include '/labels/green_label.html' %}
-                            {% elif drive.status == 'closed' %}
+                            {% if drive.status == 'closed' %}
                             {% set status = 'Closed' %}
-                            {% include '/labels/red_label.html' %}
-                            {% else %}
-                            {% set status = 'Rejected' %}
                             {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>

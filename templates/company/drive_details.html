@@ -46,6 +46,9 @@
                     {% else %}
                     <p><span>Application Deadline: </span>{{ drive.application_deadline }}</p>
                     {% endif %}
+                    {% if drive.status == 'approved' %}
+                    <small style="font-style: italic;">To make changes contact: <a style="color: #D35B1F;" href="mailto:support@placement.nist.edu">support@placement.nist.edu</a></small>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-12 col-md-4 d-flex flex-column flex-md-row justify-content-md-end gap-2">

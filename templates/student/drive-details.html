@@ -46,6 +46,10 @@
                     <p><span>Location:</span> {{ drive.location }}</p>
                     <p><span>Work Mode: </span>{{ drive.work_mode }}</p>
                     <p><span>Job Type:</span> {{ drive.job_type }}</p>
+                    {% if existing.status == 'selected' %}
+                    <p><span>HR Email:</span> <a style="color: #D35B1F;"
+                href="mailto:{{ drive.company.user.email }}">{{ drive.company.user.email }}</a></p>
+                    {% endif %}
                     {% if drive.status == 'closed' %}
                     <p class="text-danger fw-bold">Application CLOSED</p>
                     {% else %}

@@ -82,7 +82,7 @@ def dashboard():
             return redirect(url_for('company.approval_pending'))
         else:
             company = Company.query.filter_by(uid=current_user.id).first()
-            drives = PlacementDrive.query.filter_by(company_id=current_user.company.id).all()
+            drives = PlacementDrive.query.filter_by(company_id=current_user.company.id).order_by(PlacementDrive.created_at).all()
             greeting = greet(datetime.now().hour)
             pending = 0
             approved = 0
@@ -97,7 +97,7 @@ def dashboard():
                     rejected_drive+=1
                 else:
                     closed+=1
-            applications = Application.query.join(PlacementDrive).filter(PlacementDrive.company_id == current_user.company.id).all()
+            applications = Application.query.join(PlacementDrive).filter(PlacementDrive.company_id == current_user.company.id).order_by(PlacementDrive.created_at).all()
             applied = 0
             rejected = 0
             shortlisted = 0
@@ -247,11 +247,11 @@ def applications():
 def applicants(drive_id):
     status = request.args.get("filter-by-status")
     if status:
-        applications = Application.query.filter_by(drive_id=drive_id, status=status).all()
+        applications = Application.query.filter_by(drive_id=drive_id, status=status).order_by(Application.applied_at.desc()).all()
     else:
         applications = Application.query.filter_by(drive_id=drive_id).all()
     company = Company.query.filter_by(uid=current_user.id).first()
-    return render_template('company/applicants.html', applications=applications[::-1], company=company, drive_id=drive_id)
+    return render_template('company/applicants.html', applications=applications, company=company, drive_id=drive_id)
 
 @company_bp.route('application/<int:application_id>/student/<int:student_id>/details')
 @login_required

@@ -97,11 +97,14 @@ def dashboard():
     applied = 0
     shortlisted = 0
     selected = 0
+    rejected = 0
     for application in applications:
         if application.status == 'selected':
             selected+=1
         elif application.status == 'shortlisted':
             shortlisted+=1
+        elif application.status == 'rejected':
+            rejected+=1
         else:
             applied+=1
     return render_template('student/dashboard.html', 
@@ -110,7 +113,8 @@ def dashboard():
                            applications=applications,
                            applied=applied,
                            shortlisted=shortlisted,
-                           selected=selected
+                           selected=selected,
+                           rejected=rejected
                            )
 
 @student_bp.route('/search', methods=['GET', 'POST'])
@@ -123,10 +127,10 @@ def search():
         not_found = ''
 
         if search_filter == 'Companies':
-            results = Company.query.join(User).filter(Company.company_name.ilike(f"%{keyword}%")).all()
+            results = Company.query.join(User).filter(Company.company_name.ilike(f"%{keyword}%")).order_by(Company.company_name).all()
 
         elif search_filter == 'Drives':
-           results = PlacementDrive.query.join(Company).filter(PlacementDrive.job_title.ilike(f"%{keyword}%")).all()
+           results = PlacementDrive.query.join(Company).filter(PlacementDrive.job_title.ilike(f"%{keyword}%")).order_by(PlacementDrive.job_title).all()
         else:
             flash("Select search by", "danger")
             return redirect(url_for('student.search'))
@@ -149,14 +153,14 @@ def companyDetails(company_id):
 @login_required
 @student_required
 def companySpecificDrives(company_id):
-    drives = PlacementDrive.query.filter_by(company_id=company_id, status = 'approved').order_by(PlacementDrive.id.desc()).all()
+    drives = PlacementDrive.query.filter_by(company_id=company_id, status = 'approved').order_by(PlacementDrive.created_at.desc()).all()
     return render_template('/student/drives.html', drives=drives, user=current_user)
 
 @student_bp.route('/drives', methods=['GET', 'POST'])
 @login_required
 @student_required
 def drives():
-    drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.id.desc()).all()
+    drives = PlacementDrive.query.filter_by(status='approved').order_by(PlacementDrive.created_at.desc()).all()
     return render_template('/student/drives.html', drives=drives, user=current_user)
 
 @student_bp.route('/drive/<int:drive_id>/details')
@@ -187,7 +191,7 @@ def applyDrive(drive_id):
 @login_required
 @student_required
 def applications():
-    applied_drives = Application.query.filter_by(student_id=current_user.student.id).order_by(Application.id.desc()).all()
+    applied_drives = Application.query.filter_by(student_id=current_user.student.id).order_by(Application.applied_at.desc()).all()
     return render_template('/student/application.html', applied_drives=applied_drives, user=current_user)
 
 

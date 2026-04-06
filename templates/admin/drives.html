@@ -84,9 +84,9 @@
                         src="{{ url_for('static', filename='uploads/profiles/' + drive.company.profile_filename) }}" alt="">
                 </div>
                 <div class="text ms-4">
-                    <div class="box d-flex flex-column align-items-start mb-2">
-                        <div class="box d-flex align-items-center gap-4 mb-2">
-                            <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
+                    <div class="box d-flex flex-column align-items-start mb-1">
+                        <div class="box d-flex align-items-center gap-4">
+                            <h5 class="mb-0">{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
                             {% if drive.status == 'closed' %}
                                 {% set status = 'Closed' %}
                                 {% include '/labels/red_label.html' %}
@@ -97,6 +97,7 @@
                         </div>
                     </div>
                     <p class="mb-0">{{ drive.location }} | {{ drive.work_mode }} | {{ drive.job_type }}</p>
+                    <p class="text-secondary">Created on: {{ drive.created_at.strftime('%d %B %Y') }}</p>
                 </div>
             </div>
             <div class="col d-flex justify-content-end align-items-center">

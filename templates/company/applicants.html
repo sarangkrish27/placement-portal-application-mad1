@@ -26,7 +26,7 @@
         <div class="company-list mt-5">
             <div class="row d-flex">
                 <div class="col-10">
-                    <h2>All Students</h2>
+                    <h2>All Applicants</h2>
                 </div>
                 <div class="col-md-2">
                     <form method="get" action="{{ url_for('company.applicants', drive_id=drive_id) }}" id="filterForm"
@@ -56,7 +56,7 @@
                             alt="">
                     </div>
                     <div class="text ms-4">
-                        <div class="box d-flex align-items-center gap-4 mb-2">
+                        <div class="box d-flex align-items-center gap-4 mb-1">
                             <h5>{{ application.student.name }}</h5>
                             {% if application.student.user.is_blacklisted %}
                                 {% set status = 'Blacklisted' %}
@@ -76,7 +76,8 @@
                                 {% include '/labels/red_label.html' %}
                                 {% endif %}
                         </div>
-                        <p>{{ application.student.degree }} | {{ application.student.department }}</p>
+                        <p class="mb-0">{{ application.student.degree }} | {{ application.student.department }}</p>
+                        <p class="text-secondary mb-0">Applied on: {{ application.applied_at.strftime('%d %B %Y')  }}</p>
                     </div>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">

@@ -42,7 +42,8 @@
                                 {% include '/labels/red_label.html' %}
                             {% endif %}
                         </div>        
-                        <p>{{ application.drive.location }} | {{ application.drive.job_type }} | {{ application.drive.work_mode }}</p>
+                        <p class="mb-0">{{ application.drive.location }} | {{ application.drive.job_type }} | {{ application.drive.work_mode }}</p>
+                        <p class="text-secondary">Applied on: {{ application.applied_at.strftime('%d %B %Y') }}</p>
                     </div>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center">

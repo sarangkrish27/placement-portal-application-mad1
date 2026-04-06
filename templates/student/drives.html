@@ -34,7 +34,7 @@
                 </div>
                 <div class="text ms-4">
                     <div class="box d-flex flex-column align-items-start mb-2">
-                        <div class="box d-flex align-items-center gap-4 mb-2">
+                        <div class="box d-flex align-items-center gap-4">
                             <h5>{{ drive.company.company_name }} | {{ drive.job_title }}</h5>
 
                             {% set application = drive.applications | selectattr('student_id', 'equalto', current_user.student.id) | list | first | default(none) %}

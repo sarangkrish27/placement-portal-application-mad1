@@ -15,152 +15,157 @@
     </h1>
     <div class="row">
     </div>
-    <form class="form-box mt-4" action="" method="post">
-      {{ form.hidden_tag() }}
-      <div class="job-overview">
-        <h3>Job Overview</h3>
-        <div class="row">
-          <div class="col">
-            <div class="job-title">
-              {{ form.job_title.label }} {{ form.job_title(class="rounded-pill
-              w-100 ps-3 mb-1") }}
-              {% for error in form.job_title.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
+    <form class="form-box mt-4" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="job-overview">
+                <h3>Job Overview</h3>
+                <div class="row">
+                    <div class="col">
+                        <div class="job-title">
+                            {{ form.job_title.label }}
+                            {{ form.job_title(class="rounded-pill w-100 ps-3 mb-1") }}
+                            {% for error in form.job_title.errors %}
+                                <div class="text-danger mb-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="job-location">
+                            {{ form.location.label }}
+                            {{ form.location(class="rounded-pill w-100 ps-3 mb-1") }}
+                            {% for error in form.location.errors %}
+                                <div class="text-danger mb-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="job-mode">
+                            {{ form.work_mode.label }}
+                            {{ form.work_mode(class="form-select mb-1 rounded-pill") }}
+                            {% for error in form.work_mode.errors %}
+                                <div class="text-danger mb-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="job-type">
+                            {{ form.job_type.label }}
+                            {{ form.job_type(class="form-select mb-1 rounded-pill") }}
+                            {% for error in form.job_type.errors %}
+                                <div class="text-danger mb-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col">
-            <div class="job-location">
-              {{ form.location.label }} {{
-              form.location(class="rounded-pill w-100 ps-3 mb-1") }}
-              {% for error in form.location.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="job-mode">
-              {{ form.work_mode.label }} {{ form.work_mode(class="form-select mb-1
-              rounded-pill") }}
-              {% for error in form.work_mode.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-            </div>
-          </div>
-          <div class="col">
-            <div class="job-type">
-              {{ form.job_type.label }} {{ form.job_type(class="form-select mb-1
-              rounded-pill") }}
-              {% for error in form.job_type.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="job-des mt-4">
-        <h3>Job Description</h3>
-        {{ form.job_description(class="big-input w-100 ps-3 mb-1",
-        style="height:160px; border-radius:32px;") }}
-        {% for error in form.job_description.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-      </div>
-      <div class="job-responsibility mt-4">
-        <h3>Key Responsibilities</h3>
-        {{ form.key_responsibility(class="big-input w-100 ps-3 mb-1",
-        style="height:160px; border-radius:32px;") }}
-        {% for error in form.key_responsibility.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-      </div>
+            <div class="job-des mt-4">
+                <h3>Job Description</h3>
+                {{ form.job_description(class="big-input w-100 ps-3 mb-1",
+                style="height:160px; border-radius:32px;") }}
+                {% for error in form.job_description.errors %}
+                    <div class="text-danger mb-2">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-      <div class="job-eligibility mt-4">
-        <h3>Eligibility Criteria</h3>
-        <div class="row">
-          <div class="col">
-            <label class="form-label" for="eligible_degrees">
-              {{ form.eligible_degrees.label.text }}
-            </label>
-            {{ form.eligible_degrees(class="form-select select2-multi",
-            id="multiple_select") }}
-            {% for error in form.eligible_degrees.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-          </div>
-          <div class="col">
-            <label class="form-label" for="preferred_departments">
-              {{ form.preferred_departments.label.text }}
-            </label>
-            {{ form.preferred_departments(class="form-select select2-multi",
-            id="multiple_select") }}
-            {% for error in form.preferred_departments.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-          </div>
-        </div>
-        <small class="text-muted">
-          Hold Ctrl (Windows) / Cmd (Mac) to select multiple
-        </small>
-        <div class="job-min-cgpa">
-          {{ form.cgpa.label }} {{ form.cgpa(class="rounded-pill ps-3 w-100
-          mb-1", placeholder="e.g. 7.50") }}
-          {% for error in form.cgpa.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-        </div>
-        <div class="job-other-eligibility">
-          {{ form.other_eligibility.label }} {{
-          form.other_eligibility(class="big-input w-100 ps-3 mb-1",
-          style="height:160px; border-radius:32px;") }}
-          {% for error in form.other_eligibility.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-        </div>
-      </div>
-      <div class="job-skills mt-4">
-        <h3>Required Technical Skills</h3>
-        {{ form.required_skills(class="big-input w-100 ps-3 mb-1",
-        style="height:160px; border-radius:32px;") }}
-        {% for error in form.required_skills.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-      </div>
-      <div class="job-pref-skills mt-4">
-        <h3>Preferred Skills</h3>
-        {{ form.preferred_skills(class="big-input w-100 ps-3 mb-1",
-        style="height:160px; border-radius:32px;") }}
-        {% for error in form.preferred_skills.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-      </div>
-      <div class="job-compensation-benefits mt-4">
-        <h3>Compensation & Benefits</h3>
-        {{ form.compensation_benefits(class="big-input w-100 ps-3 mb-1",
-        style="height:160px; border-radius:32px;") }}
-        {% for error in form.compensation_benefits.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-      </div>
-      <div class="row">
-        <div class="job-deadline mt-4">
-          <h3>Application Deadline</h3>
-          {{ form.application_deadline(class="big-input w-100 ps-3 mb-1",
-          style="height:56px; border-radius:32px;",
-          min=date.today().isoformat()) }}
-          {% for error in form.application_deadline.errors %}
-                            <div class="text-danger mt-1">{{ error }}</div>
-                        {% endfor %}
-        </div>
-      </div>
+            <div class="job-responsibility mt-4">
+                <h3>Key Responsibilities</h3>
+                {{ form.key_responsibility(class="big-input w-100 ps-3 mb-1",
+                style="height:160px; border-radius:32px;") }}
+                {% for error in form.key_responsibility.errors %}
+                    <div class="text-danger mb-2">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-      <div class="row mt-4">
-        {{ form.submit(class="btn btn-dark rounded-pill shadow", value=('Save Changes')) }}
-      </div>
-    </form>
+            <div class="job-eligibility mt-4">
+                <h3>Eligibility Criteria</h3>
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label" for="eligible_degrees">
+                            {{ form.eligible_degrees.label.text }}
+                        </label>
+                        {{ form.eligible_degrees(class="form-select select2-multi",
+                        id="multiple_select") }}
+                        {% for error in form.eligible_degrees.errors %}
+                            <div class="text-danger mb-2">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="col">
+                        <label class="form-label" for="preferred_departments">
+                            {{ form.preferred_departments.label.text }}
+                        </label>
+                        {{ form.preferred_departments(class="form-select select2-multi",
+                        id="multiple_select") }}
+                        {% for error in form.preferred_departments.errors %}
+                            <div class="text-danger mb-2">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <small class="text-muted">
+                    Hold Ctrl (Windows) / Cmd (Mac) to select multiple
+                </small>
+                <div class="job-min-cgpa">
+                    {{ form.cgpa.label }}
+                    {{ form.cgpa(class="rounded-pill ps-3 w-100 mb-1", placeholder="e.g. 7.50") }}
+                    {% for error in form.cgpa.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="job-other-eligibility">
+                    {{ form.other_eligibility.label }}
+                    {{ form.other_eligibility(class="big-input w-100 ps-3 mb-1",
+                    style="height:160px; border-radius:32px;") }}
+                    {% for error in form.other_eligibility.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="job-skills mt-4">
+                <h3>Required Technical Skills</h3>
+                {{ form.required_skills(class="big-input w-100 ps-3 mb-1",
+                style="height:160px; border-radius:32px;") }}
+                {% for error in form.required_skills.errors %}
+                    <div class="text-danger mb-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="job-pref-skills mt-4">
+                <h3>Preferred Skills</h3>
+                {{ form.preferred_skills(class="big-input w-100 ps-3 mb-1",
+                style="height:160px; border-radius:32px;") }}
+                {% for error in form.preferred_skills.errors %}
+                    <div class="text-danger mb-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="job-compensation-benefits mt-4">
+                <h3>Compensation & Benefits</h3>
+                {{ form.compensation_benefits(class="big-input w-100 ps-3 mb-1",
+                style="height:160px; border-radius:32px;") }}
+                {% for error in form.compensation_benefits.errors %}
+                    <div class="text-danger mb-2">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="job-deadline mt-4">
+                    <h3>Application Deadline</h3>
+                    {{ form.application_deadline(class="big-input w-100 ps-3 mb-1",
+                    style="height:56px; border-radius:32px;",
+                    min=date.today().isoformat()) }}
+                    {% for error in form.application_deadline.errors %}
+                        <div class="text-danger mb-2">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                {{ form.submit(class="btn btn-dark rounded-pill shadow", value="Save changes") }}
+            </div>
+        </form>
   </div>
 </div>
 
